@@ -9,5 +9,6 @@
 
 -   Vite
 -   React 18
+-   Styled Components
 
 <!-- [Link to project](https://) -->
