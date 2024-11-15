@@ -9,6 +9,7 @@
 
 -   Vite
 -   React 18
+-   React Router 6
 -   Styled Components
 
 <!-- [Link to project](https://) -->
