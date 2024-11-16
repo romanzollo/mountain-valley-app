@@ -11,5 +11,6 @@
 -   React 18
 -   React Router 6
 -   Styled Components
+-   React Icons
 
 <!-- [Link to project](https://) -->

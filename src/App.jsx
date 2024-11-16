@@ -16,7 +16,13 @@ function App() {
         <>
             {/* Глобальные стили */}
             <GlobalStyles />
-            <BrowserRouter>
+            <BrowserRouter
+                future={{
+                    // future flags
+                    v7_relativeSplatPath: true,
+                    v7_startTransition: true,
+                }}
+            >
                 <Routes>
                     <Route element={<AppLayout />}>
                         {/* Navigate - для редиректа по умолчанию на страницу dashboard */}
