@@ -12,5 +12,6 @@
 -   React Router 6
 -   Styled Components
 -   React Icons
+-   Supabase
 
 <!-- [Link to project](https://) -->
