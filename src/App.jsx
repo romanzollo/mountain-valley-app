@@ -17,7 +17,8 @@ import AppLayout from './ui/AppLayout';
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
-            staleTime: 60 * 1000, // 1 минута времени жизни кэша
+            // staleTime: 60 * 1000, // времени жизни кэша (1 мин)
+            staleTime: 0,
         },
     },
 });
@@ -28,6 +29,7 @@ function App() {
         <QueryClientProvider client={queryClient}>
             {/* подключаем к приложению инструменты разработчика */}
             <ReactQueryDevtools initialIsOpen={false} />
+
             {/* Глобальные стили */}
             <GlobalStyles />
             <BrowserRouter
