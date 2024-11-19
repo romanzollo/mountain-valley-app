@@ -1,4 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import GlobalStyles from './styles/GlobalStyles';
 import Dashboard from './pages/Dashboard';
@@ -11,9 +13,21 @@ import Login from './pages/Login';
 import PageNotFound from './pages/PageNotFound';
 import AppLayout from './ui/AppLayout';
 
+// React Query
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            staleTime: 60 * 1000, // 1 минута времени жизни кэша
+        },
+    },
+});
+
 function App() {
     return (
-        <>
+        // React Query Provider позволяет использовать React Query во всем приложении
+        <QueryClientProvider client={queryClient}>
+            {/* подключаем к приложению инструменты разработчика */}
+            <ReactQueryDevtools initialIsOpen={false} />
             {/* Глобальные стили */}
             <GlobalStyles />
             <BrowserRouter
@@ -44,7 +58,7 @@ function App() {
                     <Route path="*" element={<PageNotFound />} />
                 </Routes>
             </BrowserRouter>
-        </>
+        </QueryClientProvider>
     );
 }
 
