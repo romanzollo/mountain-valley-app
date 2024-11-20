@@ -17,5 +17,6 @@
 -   React Query Devtools
 -   React Hot Toast
 -   Date Fns
+-   React Hook Form
 
 <!-- [Link to project](https://) -->
