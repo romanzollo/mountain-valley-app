@@ -4,7 +4,6 @@ import {
     HiOutlineCog6Tooth,
     HiOutlineHome,
     HiOutlineHomeModern,
-    HiOutlineUser,
     HiOutlineUsers,
 } from 'react-icons/hi2';
 import styled from 'styled-components';

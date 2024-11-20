@@ -1,6 +1,8 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import styled from 'styled-components';
 
 import { formatCurrency } from '../../utils/helpers';
+import { deleteCabin } from '../../services/apiCabins';
 
 const TableRow = styled.div`
     display: grid;
@@ -42,7 +44,34 @@ const Discount = styled.div`
 `;
 
 function CabinRow({ cabin }) {
-    const { name, maxCapacity, regularPrice, discount, image } = cabin;
+    const {
+        id: cabinId,
+        name,
+        maxCapacity,
+        regularPrice,
+        discount,
+        image,
+    } = cabin;
+
+    // получаем доступ к нашему экземпляру запросов React Query который мы создавали в App(в нашем случае queryClient) - для обновления кэша
+    // с помощью useQueryClient
+    const queryClient = useQueryClient();
+
+    // создаем мутацию для удаления (React Query)
+    const { isLoading: isDeleting, mutate } = useMutation({
+        mutationFn: (id) => deleteCabin(id),
+        // можно сократить до
+        // mutationFn: deleteCabin,
+        onSuccess: () => {
+            alert('Cabin successfully deleted!');
+
+            queryClient.invalidateQueries({
+                queryKey: ['cabins'], // ключ запроса который нужно обновить (его мы выбрали в CabinTable - queryKey: ['cabins'])
+            });
+        }, // если удаление прошло успешно
+
+        onError: (err) => alert(err.message), // если произошла ошибка
+    });
 
     return (
         <TableRow role="row">
@@ -51,7 +80,9 @@ function CabinRow({ cabin }) {
             <div>Fits up to {maxCapacity} guests</div>
             <Price>{formatCurrency(regularPrice)}</Price>
             <Discount>{formatCurrency(discount)}</Discount>
-            <button>Delete</button>
+            <button onClick={() => mutate(cabinId)} disabled={isDeleting}>
+                Delete
+            </button>
         </TableRow>
     );
 }
