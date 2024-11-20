@@ -13,5 +13,9 @@
 -   Styled Components
 -   React Icons
 -   Supabase
+-   React Query
+-   React Query Devtools
+-   React Hot Toast
+-   Date Fns
 
 <!-- [Link to project](https://) -->

@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import styled from 'styled-components';
+import toast from 'react-hot-toast';
 
 import { formatCurrency } from '../../utils/helpers';
 import { deleteCabin } from '../../services/apiCabins';
@@ -63,14 +64,14 @@ function CabinRow({ cabin }) {
         // можно сократить до
         // mutationFn: deleteCabin,
         onSuccess: () => {
-            alert('Cabin successfully deleted!');
+            toast.success('Cabin successfully deleted!');
 
             queryClient.invalidateQueries({
                 queryKey: ['cabins'], // ключ запроса который нужно обновить (его мы выбрали в CabinTable - queryKey: ['cabins'])
             });
         }, // если удаление прошло успешно
 
-        onError: (err) => alert(err.message), // если произошла ошибка
+        onError: (err) => toast.error(err.message), // если произошла ошибка
     });
 
     return (
