@@ -7,6 +7,7 @@ import Button from '../ui/Button';
 import CreateCabinForm from '../features/cabins/CreateCabinForm';
 
 function Cabins() {
+    // создаем локальное состояние для отображения формы
     const [showForm, setShowForm] = useState(false);
 
     return (
@@ -23,6 +24,7 @@ function Cabins() {
                     Add new cabin
                 </Button>
 
+                {/* отображаем форму если showForm = true */}
                 {showForm && <CreateCabinForm />}
             </Row>
         </>
