@@ -18,5 +18,6 @@
 -   React Hot Toast
 -   Date Fns
 -   React Hook Form
+-   prop-types
 
 <!-- [Link to project](https://) -->

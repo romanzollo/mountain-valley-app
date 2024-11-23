@@ -1,5 +1,7 @@
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
+// StyledFormRow так как FormRow уже существует (в таких случаях ставим префикс Styled)
 const StyledFormRow = styled.div`
     display: grid;
     align-items: center;
@@ -39,6 +41,7 @@ const Error = styled.span`
 function FormRow({ label, error, children }) {
     return (
         <StyledFormRow>
+            {/* children.props.id - динамический id инпута (трюк:)) */}
             {label && <Label htmlFor={children.props.id}>{label}</Label>}
             {children}
 
@@ -49,3 +52,9 @@ function FormRow({ label, error, children }) {
 }
 
 export default FormRow;
+
+FormRow.propTypes = {
+    label: PropTypes.string,
+    error: PropTypes.string,
+    children: PropTypes.node.isRequired,
+};

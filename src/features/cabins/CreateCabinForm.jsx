@@ -8,9 +8,10 @@ import Form from '../../ui/Form';
 import Button from '../../ui/Button';
 import FileInput from '../../ui/FileInput';
 import Textarea from '../../ui/Textarea';
+import FormRow from '../../ui/FormRow';
 import { createCabin } from '../../services/apiCabins';
 
-const FormRow = styled.div`
+const FormRow2 = styled.div`
     display: grid;
     align-items: center;
     grid-template-columns: 24rem 1fr 1.2fr;
@@ -55,8 +56,6 @@ function CreateCabinForm() {
     // получаем из объекта состояния формы formState объект ошибок из валидации
     const { errors } = formState;
 
-    console.log(errors);
-
     // получаем доступ к нашему экземпляру запросов React Query который мы создавали в App(в нашем случае queryClient) - для обновления кэша
     // с помощью useQueryClient
     const queryClient = useQueryClient();
@@ -85,33 +84,33 @@ function CreateCabinForm() {
 
     // функция обработки ошибок для React Hook Form
     function onError(errors) {
-        console.log(errors);
+        // console.log(errors);
     }
 
     return (
         // если будет ошибка валидации, то будет вызвана 2я функция onError,
         // если нет - 1я onSubmit
         <Form onSubmit={handleSubmit(onSubmit, onError)}>
-            <FormRow>
-                <Label htmlFor="name">Cabin name</Label>
+            <FormRow label="Cabin name" error={errors?.name?.message}>
                 <Input
                     type="text"
                     id="name"
+                    disabled={isCreating}
                     // регистрируем входные данные
                     {...register('name', {
                         required: 'This field is required',
                     })}
                 />
-
-                {/* выводим сообщение об ошибке валидации если она есть */}
-                {errors?.name?.message && <Error>{errors.name.message}</Error>}
             </FormRow>
 
-            <FormRow>
-                <Label htmlFor="maxCapacity">Maximum capacity</Label>
+            <FormRow
+                label="Maximum capacity"
+                error={errors?.maxCapacity?.message}
+            >
                 <Input
                     type="number"
                     id="maxCapacity"
+                    disabled={isCreating}
                     // регистрируем входные данные
                     {...register('maxCapacity', {
                         required: 'This field is required',
@@ -122,18 +121,16 @@ function CreateCabinForm() {
                         },
                     })}
                 />
-
-                {/* выводим сообщение об ошибке валидации если она есть */}
-                {errors?.maxCapacity?.message && (
-                    <Error>{errors.maxCapacity.message}</Error>
-                )}
             </FormRow>
 
-            <FormRow>
-                <Label htmlFor="regularPrice">Regular price</Label>
+            <FormRow
+                label="Regular price"
+                error={errors?.regularPrice?.message}
+            >
                 <Input
                     type="number"
                     id="regularPrice"
+                    disabled={isCreating}
                     // регистрируем входные данные
                     {...register('regularPrice', {
                         required: 'This field is required',
@@ -144,19 +141,14 @@ function CreateCabinForm() {
                         },
                     })}
                 />
-
-                {/* выводим сообщение об ошибке валидации если она есть */}
-                {errors?.regularPrice?.message && (
-                    <Error>{errors.regularPrice.message}</Error>
-                )}
             </FormRow>
 
-            <FormRow>
-                <Label htmlFor="discount">Discount</Label>
+            <FormRow label="Discount" error={errors?.discount?.message}>
                 <Input
                     type="number"
                     id="discount"
                     defaultValue={0}
+                    disabled={isCreating}
                     // регистрируем входные данные
                     {...register('discount', {
                         required: 'This field is required',
@@ -165,37 +157,29 @@ function CreateCabinForm() {
                             // проверяем, что значение меньше или равно регулярной цене
                             // value текущее значение инпута
                             // getValues() возвращает объект всех введенных в форму данных, regularPrice - соответствует id инпута
-                            value <= getValues().regularPrice ||
+                            value >= getValues().regularPrice ||
                             'Discount should be less than regular price',
                     })}
                 />
-
-                {/* выводим сообщение об ошибке валидации если она есть */}
-                {errors?.discount?.message && (
-                    <Error>{errors.discount.message}</Error>
-                )}
             </FormRow>
 
-            <FormRow>
-                <Label htmlFor="description">Description for website</Label>
+            <FormRow
+                label="Description for website"
+                error={errors?.description?.message}
+            >
                 <Textarea
                     type="number"
                     id="description"
                     defaultValue=""
+                    disabled={isCreating}
                     // регистрируем входные данные
                     {...register('description', {
                         required: 'This field is required',
                     })}
                 />
-
-                {/* выводим сообщение об ошибке валидации если она есть */}
-                {errors?.description?.message && (
-                    <Error>{errors.description.message}</Error>
-                )}
             </FormRow>
 
-            <FormRow>
-                <Label htmlFor="image">Cabin photo</Label>
+            <FormRow label="Cabin photo">
                 <FileInput id="image" accept="image/*" />
             </FormRow>
 
