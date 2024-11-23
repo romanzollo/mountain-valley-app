@@ -64,6 +64,7 @@ function CabinRow({ cabin }) {
         // можно сократить до
         // mutationFn: deleteCabin,
         onSuccess: () => {
+            // выводим уведомление с помощью react-hot-toast
             toast.success('Cabin successfully deleted!');
 
             queryClient.invalidateQueries({
@@ -71,6 +72,7 @@ function CabinRow({ cabin }) {
             });
         }, // если удаление прошло успешно
 
+        // выводим уведомление с помощью react-hot-toast
         onError: (err) => toast.error(err.message), // если произошла ошибка
     });
 
