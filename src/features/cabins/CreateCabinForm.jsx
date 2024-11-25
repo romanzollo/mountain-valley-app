@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
-import styled from 'styled-components';
 import toast from 'react-hot-toast';
 
 import Input from '../../ui/Input';
@@ -9,49 +8,22 @@ import Button from '../../ui/Button';
 import FileInput from '../../ui/FileInput';
 import Textarea from '../../ui/Textarea';
 import FormRow from '../../ui/FormRow';
-import { createCabin } from '../../services/apiCabins';
 
-const FormRow2 = styled.div`
-    display: grid;
-    align-items: center;
-    grid-template-columns: 24rem 1fr 1.2fr;
-    gap: 2.4rem;
+import { createEditCabin } from '../../services/apiCabins';
 
-    padding: 1.2rem 0;
+function CreateCabinForm({ cabinToEdit = {} }) {
+    const { id: editId, ...editValues } = cabinToEdit;
 
-    &:first-child {
-        padding-top: 0;
-    }
+    // определяем, являемся ли мы в режиме редактирования
+    const isEditSession = Boolean(editId);
 
-    &:last-child {
-        padding-bottom: 0;
-    }
-
-    &:not(:last-child) {
-        border-bottom: 1px solid var(--color-grey-100);
-    }
-
-    &:has(button) {
-        display: flex;
-        justify-content: flex-end;
-        gap: 1.2rem;
-    }
-`;
-
-const Label = styled.label`
-    font-weight: 500;
-`;
-
-const Error = styled.span`
-    font-size: 1.4rem;
-    color: var(--color-red-700);
-`;
-
-function CreateCabinForm() {
     // register - функция, которая регистрирует входные данные (фундаментальная функция React Hook Form)
     // reset - функция, которая очищает форму
     // getValues - функция, которая возвращает объект всех введенных в форму данных
-    const { register, handleSubmit, reset, getValues, formState } = useForm(); // React Hook Form
+    const { register, handleSubmit, reset, getValues, formState } = useForm({
+        // если мы в режиме редактирования, то устанавливаем значения по умолчанию в форму из editValues
+        defaultValues: isEditSession ? editValues : {},
+    }); // React Hook Form
 
     // получаем из объекта состояния формы formState объект ошибок из валидации
     const { errors } = formState;
@@ -61,8 +33,8 @@ function CreateCabinForm() {
     const queryClient = useQueryClient();
 
     // создаем мутацию для добавления newCabin (React Query)
-    const { mutate, isLoading: isCreating } = useMutation({
-        mutationFn: (newCabin) => createCabin(newCabin),
+    const { mutate: createCabin, isLoading: isCreating } = useMutation({
+        mutationFn: (newCabin) => createEditCabin(newCabin),
         onSuccess: () => {
             // выводим уведомление с помощью react-hot-toast
             toast.success('New cabin successfully created!');
@@ -78,8 +50,34 @@ function CreateCabinForm() {
         onError: (err) => toast.error(err.message),
     });
 
+    // создаем мутацию для редактирования (React Query)
+    const { mutate: editCabin, isLoading: isEditing } = useMutation({
+        mutationFn: ({ newCabinData, id }) => createEditCabin(newCabinData, id),
+        onSuccess: () => {
+            // выводим уведомление с помощью react-hot-toast
+            toast.success('Cabin successfully edited!');
+
+            queryClient.invalidateQueries({
+                queryKey: ['cabins'], // ключ запроса который нужно обновить (его мы выбрали в CabinTable - queryKey: ['cabins'])
+            });
+
+            // очищаем форму
+            reset();
+        },
+        // выводим уведомление с помощью react-hot-toast
+        onError: (err) => toast.error(err.message),
+    });
+
+    const isWorking = isCreating || isEditing;
+
     function onSubmit(data) {
-        mutate({ ...data, image: data.image[0] });
+        // если картинка уже есть в объекте в виде строки, то берем ее, если нет, то берем первую картинку
+        const image =
+            typeof data.image === 'string' ? data.image : data.image[0];
+
+        if (isEditSession)
+            editCabin({ newCabinData: { ...data, image }, id: editId });
+        else createCabin({ ...data, image: image });
     }
 
     // функция обработки ошибок для React Hook Form
@@ -95,7 +93,7 @@ function CreateCabinForm() {
                 <Input
                     type="text"
                     id="name"
-                    disabled={isCreating}
+                    disabled={isWorking}
                     // регистрируем входные данные
                     {...register('name', {
                         required: 'This field is required',
@@ -110,7 +108,7 @@ function CreateCabinForm() {
                 <Input
                     type="number"
                     id="maxCapacity"
-                    disabled={isCreating}
+                    disabled={isWorking}
                     // регистрируем входные данные
                     {...register('maxCapacity', {
                         required: 'This field is required',
@@ -130,7 +128,7 @@ function CreateCabinForm() {
                 <Input
                     type="number"
                     id="regularPrice"
-                    disabled={isCreating}
+                    disabled={isWorking}
                     // регистрируем входные данные
                     {...register('regularPrice', {
                         required: 'This field is required',
@@ -148,7 +146,7 @@ function CreateCabinForm() {
                     type="number"
                     id="discount"
                     defaultValue={0}
-                    disabled={isCreating}
+                    disabled={isWorking}
                     // регистрируем входные данные
                     {...register('discount', {
                         required: 'This field is required',
@@ -157,7 +155,7 @@ function CreateCabinForm() {
                             // проверяем, что значение меньше или равно регулярной цене
                             // value текущее значение инпута
                             // getValues() возвращает объект всех введенных в форму данных, regularPrice - соответствует id инпута
-                            value >= getValues().regularPrice ||
+                            value <= getValues().regularPrice ||
                             'Discount should be less than regular price',
                     })}
                 />
@@ -171,7 +169,7 @@ function CreateCabinForm() {
                     type="number"
                     id="description"
                     defaultValue=""
-                    disabled={isCreating}
+                    disabled={isWorking}
                     // регистрируем входные данные
                     {...register('description', {
                         required: 'This field is required',
@@ -185,7 +183,9 @@ function CreateCabinForm() {
                     accept="image/*"
                     // регистрируем входные данные
                     {...register('image', {
-                        required: 'This field is required',
+                        required: isEditSession
+                            ? false
+                            : 'This field is required',
                     })}
                 />
             </FormRow>
@@ -195,7 +195,9 @@ function CreateCabinForm() {
                 <Button variation="secondary" type="reset">
                     Cancel
                 </Button>
-                <Button disabled={isCreating}>Add cabin</Button>
+                <Button disabled={isWorking}>
+                    {isEditSession ? 'Edit cabin' : 'Create a new cabin'}
+                </Button>
             </FormRow>
         </Form>
     );

@@ -14,7 +14,12 @@ export async function getCabins() {
     return data;
 }
 
-export async function createCabin(newCabin) {
+export async function createEditCabin(newCabin, id) {
+    // если id есть, то редактируем хижину, если нет, то создаем новую
+
+    // проверяем есть ли картинка в объекте newCabin
+    const hasImagePath = newCabin.image?.startsWith?.(supabaseUrl);
+
     // создаем случайное имя картинки(Math.random()) + убираем слэш в названии
     // чтобы supabase не создавал лишние папки в хранилище если в названии изображения есть слэш
     const imageName = `${Math.random()}-${newCabin.image.name}`.replaceAll(
@@ -22,13 +27,23 @@ export async function createCabin(newCabin) {
         ''
     );
 
-    const imagePath = `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`;
+    // если картинка уже есть, то берем путь изображения из объекта newCabin, если нет, то формируем новый путь
+    const imagePath = hasImagePath
+        ? newCabin.image
+        : `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`;
 
-    // 1. добавляем новую хижину в базу
-    const { data, error } = await supabase
-        .from('cabins')
-        .insert([{ ...newCabin, image: imagePath }]) // передаем в базу название картинки новой хижины
-        .select();
+    // 1. создаем/редактируем новую хижину в базу
+    let query = supabase.from('cabins');
+
+    // A) создаем
+    if (!id) query = query.insert([{ ...newCabin, image: imagePath }]); // передаем в базу название картинки новой хижины
+
+    // B) редактируем
+    if (id) {
+        query = query.update({ ...newCabin, image: imagePath }).eq('id', id);
+    }
+
+    const { data, error } = await query.select().single(); // чтобы удалить новый элемент из массива в котором он будет находиться;
 
     if (error) {
         console.error(error);
