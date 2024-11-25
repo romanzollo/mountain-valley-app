@@ -35,10 +35,10 @@ export async function createEditCabin(newCabin, id) {
     // 1. создаем/редактируем новую хижину в базу
     let query = supabase.from('cabins');
 
-    // A) создаем
+    // A) создаем (id нет)
     if (!id) query = query.insert([{ ...newCabin, image: imagePath }]); // передаем в базу название картинки новой хижины
 
-    // B) редактируем
+    // B) редактируем (id есть)
     if (id) {
         query = query.update({ ...newCabin, image: imagePath }).eq('id', id);
     }
