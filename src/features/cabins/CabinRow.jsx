@@ -1,13 +1,11 @@
 import { useState } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import toast from 'react-hot-toast';
 
 import CreateCabinForm from './CreateCabinForm';
 
 import { formatCurrency } from '../../utils/helpers';
-import { deleteCabin } from '../../services/apiCabins';
+import { useDeleteCabin } from './useDeleteCabin';
 
 const TableRow = styled.div`
     display: grid;
@@ -52,6 +50,9 @@ function CabinRow({ cabin }) {
     // создаем локальное состояние для отображения формы
     const [showForm, setShowForm] = useState(false);
 
+    // используем кастомный хук для удаления хижины
+    const { isDeleting, deleteCabin } = useDeleteCabin();
+
     const {
         id: cabinId,
         name,
@@ -61,28 +62,6 @@ function CabinRow({ cabin }) {
         image,
     } = cabin;
 
-    // получаем доступ к нашему экземпляру запросов React Query который мы создавали в App(в нашем случае queryClient) - для обновления кэша
-    // с помощью useQueryClient
-    const queryClient = useQueryClient();
-
-    // создаем мутацию для удаления (React Query)
-    const { isLoading: isDeleting, mutate } = useMutation({
-        mutationFn: (id) => deleteCabin(id),
-        // можно сократить до
-        // mutationFn: deleteCabin,
-        onSuccess: () => {
-            // выводим уведомление с помощью react-hot-toast
-            toast.success('Cabin successfully deleted!');
-
-            queryClient.invalidateQueries({
-                queryKey: ['cabins'], // ключ запроса который нужно обновить (его мы выбрали в CabinTable - queryKey: ['cabins'])
-            });
-        }, // если удаление прошло успешно
-
-        // выводим уведомление с помощью react-hot-toast
-        onError: (err) => toast.error(err.message), // если произошла ошибка
-    });
-
     return (
         <>
             <TableRow role="row">
@@ -90,13 +69,17 @@ function CabinRow({ cabin }) {
                 <Cabin>{name}</Cabin>
                 <div>Fits up to {maxCapacity} guests</div>
                 <Price>{formatCurrency(regularPrice)}</Price>
-                <Discount>{formatCurrency(discount)}</Discount>
+                {discount ? (
+                    <Discount>{formatCurrency(discount)}</Discount>
+                ) : (
+                    <span>&mdash;</span>
+                )}
                 <div>
                     <button onClick={() => setShowForm((show) => !show)}>
                         Edit
                     </button>
                     <button
-                        onClick={() => mutate(cabinId)}
+                        onClick={() => deleteCabin(cabinId)}
                         disabled={isDeleting}
                     >
                         Delete

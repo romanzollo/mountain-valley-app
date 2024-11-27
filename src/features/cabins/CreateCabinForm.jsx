@@ -1,6 +1,4 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import PropTypes from 'prop-types';
 
 import Input from '../../ui/Input';
@@ -10,10 +8,18 @@ import FileInput from '../../ui/FileInput';
 import Textarea from '../../ui/Textarea';
 import FormRow from '../../ui/FormRow';
 
-import { createEditCabin } from '../../services/apiCabins';
+import { useCreateCabin } from './useCreateCabin';
+import { useEditCabin } from './useEditCabin';
 
 function CreateCabinForm({ cabinToEdit = {} }) {
     const { id: editId, ...editValues } = cabinToEdit;
+
+    // используем кастомный хук для создания новой хижины
+    const { isCreating, createCabin } = useCreateCabin();
+    // используем кастомный хук для редактирования хижины
+    const { isEditing, editCabin } = useEditCabin();
+    // для удобства объединяем значение isCreating и isEditing в одну переменную
+    const isWorking = isCreating || isEditing;
 
     // определяем, являемся ли мы в режиме редактирования
     const isEditSession = Boolean(editId);
@@ -29,49 +35,6 @@ function CreateCabinForm({ cabinToEdit = {} }) {
     // получаем из объекта состояния формы formState объект ошибок из валидации
     const { errors } = formState;
 
-    // получаем доступ к нашему экземпляру запросов React Query который мы создавали в App(в нашем случае queryClient) - для обновления кэша
-    // с помощью useQueryClient
-    const queryClient = useQueryClient();
-
-    /* ===  создаем мутацию для добавления новой хижины (React Query) === */
-    const { mutate: createCabin, isLoading: isCreating } = useMutation({
-        mutationFn: (newCabin) => createEditCabin(newCabin),
-        onSuccess: () => {
-            // выводим уведомление с помощью react-hot-toast
-            toast.success('New cabin successfully created!');
-
-            queryClient.invalidateQueries({
-                queryKey: ['cabins'], // ключ запроса который нужно обновить (его мы выбрали в CabinTable - queryKey: ['cabins'])
-            });
-
-            // очищаем форму
-            reset();
-        },
-        // выводим уведомление с помощью react-hot-toast
-        onError: (err) => toast.error(err.message),
-    });
-
-    /* === создаем мутацию для редактирования (React Query) === */
-    const { mutate: editCabin, isLoading: isEditing } = useMutation({
-        mutationFn: ({ newCabinData, id }) => createEditCabin(newCabinData, id),
-        onSuccess: () => {
-            // выводим уведомление с помощью react-hot-toast
-            toast.success('Cabin successfully edited');
-
-            queryClient.invalidateQueries({
-                queryKey: ['cabins'], // ключ запроса который нужно обновить (его мы выбрали в CabinTable - queryKey: ['cabins'])
-            });
-
-            // очищаем форму
-            reset();
-        },
-        // выводим уведомление с помощью react-hot-toast
-        onError: (err) => toast.error(err.message),
-    });
-
-    // для удобства объединяем значение isCreating и isEditing в одну переменную
-    const isWorking = isCreating || isEditing;
-
     function onSubmit(data) {
         // если картинка уже есть в объекте в виде строки, то берем ее, если нет, то берем первую картинку
         const image =
@@ -79,8 +42,25 @@ function CreateCabinForm({ cabinToEdit = {} }) {
 
         // если мы в режиме редактирования, то вызываем функцию редактирования
         if (isEditSession)
-            editCabin({ newCabinData: { ...data, image }, id: editId });
-        else createCabin({ ...data, image: image });
+            editCabin(
+                { newCabinData: { ...data, image }, id: editId },
+                {
+                    onSuccess: (data) => {
+                        // очищаем форму
+                        reset();
+                    },
+                }
+            );
+        else
+            createCabin(
+                { ...data, image: image },
+                {
+                    onSuccess: (data) => {
+                        // очищаем форму
+                        reset();
+                    },
+                }
+            );
     }
 
     // функция обработки ошибок для React Hook Form
