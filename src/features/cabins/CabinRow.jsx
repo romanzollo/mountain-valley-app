@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { HiPencil, HiSquare2Stack, HiTrash } from 'react-icons/hi2';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -6,6 +7,7 @@ import CreateCabinForm from './CreateCabinForm';
 
 import { formatCurrency } from '../../utils/helpers';
 import { useDeleteCabin } from './useDeleteCabin';
+import { useCreateCabin } from './useCreateCabin';
 
 const TableRow = styled.div`
     display: grid;
@@ -53,6 +55,9 @@ function CabinRow({ cabin }) {
     // используем кастомный хук для удаления хижины
     const { isDeleting, deleteCabin } = useDeleteCabin();
 
+    // используем кастомный хук для создания новой хижины
+    const { isCreating, createCabin } = useCreateCabin();
+
     const {
         id: cabinId,
         name,
@@ -60,7 +65,19 @@ function CabinRow({ cabin }) {
         regularPrice,
         discount,
         image,
+        description,
     } = cabin;
+
+    function handleDuplicate() {
+        createCabin({
+            name: `Copy of ${name}`,
+            maxCapacity,
+            regularPrice,
+            discount,
+            image,
+            description,
+        });
+    }
 
     return (
         <>
@@ -75,14 +92,18 @@ function CabinRow({ cabin }) {
                     <span>&mdash;</span>
                 )}
                 <div>
+                    <button onClick={handleDuplicate} disabled={isCreating}>
+                        <HiSquare2Stack />
+                    </button>
+
                     <button onClick={() => setShowForm((show) => !show)}>
-                        Edit
+                        <HiPencil />
                     </button>
                     <button
                         onClick={() => deleteCabin(cabinId)}
                         disabled={isDeleting}
                     >
-                        Delete
+                        <HiTrash />
                     </button>
                 </div>
             </TableRow>
@@ -102,5 +123,6 @@ CabinRow.propTypes = {
         regularPrice: PropTypes.number,
         discount: PropTypes.number,
         image: PropTypes.string,
+        description: PropTypes.string,
     }),
 };
