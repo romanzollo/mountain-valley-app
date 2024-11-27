@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import toast from 'react-hot-toast';
 
@@ -48,6 +49,7 @@ const Discount = styled.div`
 `;
 
 function CabinRow({ cabin }) {
+    // создаем локальное состояние для отображения формы
     const [showForm, setShowForm] = useState(false);
 
     const {
@@ -108,3 +110,14 @@ function CabinRow({ cabin }) {
 }
 
 export default CabinRow;
+
+CabinRow.propTypes = {
+    cabin: PropTypes.shape({
+        id: PropTypes.number,
+        name: PropTypes.string,
+        maxCapacity: PropTypes.number,
+        regularPrice: PropTypes.number,
+        discount: PropTypes.number,
+        image: PropTypes.string,
+    }),
+};

@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import PropTypes from 'prop-types';
 
 import Input from '../../ui/Input';
 import Form from '../../ui/Form';
@@ -32,7 +33,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
     // с помощью useQueryClient
     const queryClient = useQueryClient();
 
-    // создаем мутацию для добавления newCabin (React Query)
+    /* ===  создаем мутацию для добавления новой хижины (React Query) === */
     const { mutate: createCabin, isLoading: isCreating } = useMutation({
         mutationFn: (newCabin) => createEditCabin(newCabin),
         onSuccess: () => {
@@ -50,12 +51,12 @@ function CreateCabinForm({ cabinToEdit = {} }) {
         onError: (err) => toast.error(err.message),
     });
 
-    // создаем мутацию для редактирования (React Query)
+    /* === создаем мутацию для редактирования (React Query) === */
     const { mutate: editCabin, isLoading: isEditing } = useMutation({
         mutationFn: ({ newCabinData, id }) => createEditCabin(newCabinData, id),
         onSuccess: () => {
             // выводим уведомление с помощью react-hot-toast
-            toast.success('Cabin successfully edited!');
+            toast.success('Cabin successfully edited');
 
             queryClient.invalidateQueries({
                 queryKey: ['cabins'], // ключ запроса который нужно обновить (его мы выбрали в CabinTable - queryKey: ['cabins'])
@@ -68,6 +69,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
         onError: (err) => toast.error(err.message),
     });
 
+    // для удобства объединяем значение isCreating и isEditing в одну переменную
     const isWorking = isCreating || isEditing;
 
     function onSubmit(data) {
@@ -75,6 +77,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
         const image =
             typeof data.image === 'string' ? data.image : data.image[0];
 
+        // если мы в режиме редактирования, то вызываем функцию редактирования
         if (isEditSession)
             editCabin({ newCabinData: { ...data, image }, id: editId });
         else createCabin({ ...data, image: image });
@@ -183,6 +186,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
                     accept="image/*"
                     // регистрируем входные данные
                     {...register('image', {
+                        // если мы в режиме редактирования, то поле не обязательное
                         required: isEditSession
                             ? false
                             : 'This field is required',
@@ -204,3 +208,15 @@ function CreateCabinForm({ cabinToEdit = {} }) {
 }
 
 export default CreateCabinForm;
+
+CreateCabinForm.propTypes = {
+    cabinToEdit: PropTypes.shape({
+        id: PropTypes.number,
+        name: PropTypes.string,
+        maxCapacity: PropTypes.number,
+        regularPrice: PropTypes.number,
+        discount: PropTypes.number,
+        description: PropTypes.string,
+        image: PropTypes.string,
+    }),
+};

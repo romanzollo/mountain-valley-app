@@ -14,9 +14,9 @@ export async function getCabins() {
     return data;
 }
 
+// функция для создания/редактирования хижины
+// вводим дополнительно id для возможности редактирования при наличии id
 export async function createEditCabin(newCabin, id) {
-    // если id есть, то редактируем хижину, если нет, то создаем новую
-
     // проверяем есть ли картинка в объекте newCabin
     const hasImagePath = newCabin.image?.startsWith?.(supabaseUrl);
 
@@ -32,6 +32,7 @@ export async function createEditCabin(newCabin, id) {
         ? newCabin.image
         : `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`;
 
+    /* --- прием повторного использования одной функции для разных целей(редактирование/создание) в зависимости от входных данных(наличие id) --- */
     // 1. создаем/редактируем новую хижину в базу
     let query = supabase.from('cabins');
 
