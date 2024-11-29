@@ -9,27 +9,27 @@ import Textarea from '../../ui/Textarea';
 import FormRow from '../../ui/FormRow';
 
 import { useCreateCabin } from './useCreateCabin';
-import { useEditCabin } from './useEditCabin';
+import { useUpdateCabin } from './useUpdateCabin';
 
-function CreateCabinForm({ cabinToEdit = {} }) {
-    const { id: editId, ...editValues } = cabinToEdit;
+function CreateCabinForm({ cabinToUpdate = {} }) {
+    const { id: updateId, ...updateValues } = cabinToUpdate;
 
     // используем кастомный хук для создания новой хижины
     const { isCreating, createCabin } = useCreateCabin();
     // используем кастомный хук для редактирования хижины
-    const { isEditing, editCabin } = useEditCabin();
-    // для удобства объединяем значение isCreating и isEditing в одну переменную
-    const isWorking = isCreating || isEditing;
+    const { isUpdating, updateCabin } = useUpdateCabin();
+    // для удобства объединяем значение isCreating и isUpdating в одну переменную
+    const isWorking = isCreating || isUpdating;
 
     // определяем, являемся ли мы в режиме редактирования
-    const isEditSession = Boolean(editId);
+    const isUpdateSession = Boolean(updateId);
 
     // register - функция, которая регистрирует входные данные (фундаментальная функция React Hook Form)
     // reset - функция, которая очищает форму
     // getValues - функция, которая возвращает объект всех введенных в форму данных
     const { register, handleSubmit, reset, getValues, formState } = useForm({
-        // если мы в режиме редактирования, то устанавливаем значения по умолчанию в форму из editValues
-        defaultValues: isEditSession ? editValues : {},
+        // если мы в режиме редактирования, то устанавливаем значения по умолчанию в форму из updateValues
+        defaultValues: isUpdateSession ? updateValues : {},
     }); // React Hook Form
 
     // получаем из объекта состояния формы formState объект ошибок из валидации
@@ -41,9 +41,9 @@ function CreateCabinForm({ cabinToEdit = {} }) {
             typeof data.image === 'string' ? data.image : data.image[0];
 
         // если мы в режиме редактирования, то вызываем функцию редактирования
-        if (isEditSession)
-            editCabin(
-                { newCabinData: { ...data, image }, id: editId },
+        if (isUpdateSession)
+            updateCabin(
+                { newCabinData: { ...data, image }, id: updateId },
                 {
                     onSuccess: (data) => {
                         // очищаем форму
@@ -167,7 +167,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
                     // регистрируем входные данные
                     {...register('image', {
                         // если мы в режиме редактирования, то поле не обязательное
-                        required: isEditSession
+                        required: isUpdateSession
                             ? false
                             : 'This field is required',
                     })}
@@ -180,7 +180,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
                     Cancel
                 </Button>
                 <Button disabled={isWorking}>
-                    {isEditSession ? 'Edit cabin' : 'Create a new cabin'}
+                    {isUpdateSession ? 'Update cabin' : 'Create a new cabin'}
                 </Button>
             </FormRow>
         </Form>
@@ -190,7 +190,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
 export default CreateCabinForm;
 
 CreateCabinForm.propTypes = {
-    cabinToEdit: PropTypes.shape({
+    cabinToUpdate: PropTypes.shape({
         id: PropTypes.number,
         name: PropTypes.string,
         maxCapacity: PropTypes.number,

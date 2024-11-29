@@ -16,7 +16,7 @@ export async function getCabins() {
 
 // функция для создания/редактирования хижины
 // вводим дополнительно id для возможности редактирования при наличии id
-export async function createEditCabin(newCabin, id) {
+export async function createUpdateCabin(newCabin, id) {
     // проверяем есть ли картинка в объекте newCabin
     const hasImagePath = newCabin.image?.startsWith?.(supabaseUrl);
 

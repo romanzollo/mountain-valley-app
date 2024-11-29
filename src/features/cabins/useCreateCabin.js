@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
-import { createEditCabin } from '../../services/apiCabins';
+import { createUpdateCabin } from '../../services/apiCabins';
 
 export function useCreateCabin() {
     // получаем доступ к нашему экземпляру запросов React Query который мы создавали в App(в нашем случае queryClient) - для обновления кэша
@@ -10,7 +10,7 @@ export function useCreateCabin() {
 
     /* ===  создаем мутацию для добавления новой хижины (React Query) === */
     const { mutate: createCabin, isLoading: isCreating } = useMutation({
-        mutationFn: (newCabin) => createEditCabin(newCabin),
+        mutationFn: (newCabin) => createUpdateCabin(newCabin),
         onSuccess: () => {
             // выводим уведомление с помощью react-hot-toast
             toast.success('New cabin successfully created!');

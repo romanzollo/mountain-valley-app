@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { getSettings } from '../../services/apiSettings';
 
+// кастомный хук для получения данных о настройках из API
 export function useSettings() {
     const {
         isLoading,
