@@ -19,5 +19,6 @@
 -   Date Fns
 -   React Hook Form
 -   prop-types
+-   React Portal
 
 <!-- [Link to project](https://) -->

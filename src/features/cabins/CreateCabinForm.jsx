@@ -11,7 +11,7 @@ import FormRow from '../../ui/FormRow';
 import { useCreateCabin } from './useCreateCabin';
 import { useUpdateCabin } from './useUpdateCabin';
 
-function CreateCabinForm({ cabinToUpdate = {} }) {
+function CreateCabinForm({ cabinToUpdate = {}, onCloseModal }) {
     const { id: updateId, ...updateValues } = cabinToUpdate;
 
     // используем кастомный хук для создания новой хижины
@@ -48,6 +48,9 @@ function CreateCabinForm({ cabinToUpdate = {} }) {
                     onSuccess: (data) => {
                         // очищаем форму
                         reset();
+
+                        // вызываем функцию закрытия модального окна + optional chaining (чтобы избежать ошибки при отсутствии onCloseModal)
+                        onCloseModal?.();
                     },
                 }
             );
@@ -58,6 +61,9 @@ function CreateCabinForm({ cabinToUpdate = {} }) {
                     onSuccess: (data) => {
                         // очищаем форму
                         reset();
+
+                        // вызываем функцию закрытия модального окна + optional chaining (чтобы избежать ошибки при отсутствии onCloseModal)
+                        onCloseModal?.();
                     },
                 }
             );
@@ -71,7 +77,11 @@ function CreateCabinForm({ cabinToUpdate = {} }) {
     return (
         // если будет ошибка валидации, то будет вызвана 2я функция onError,
         // если нет - 1я onSubmit
-        <Form onSubmit={handleSubmit(onSubmit, onError)}>
+        // если onCloseModal есть, то форма будет использоваться в модальном окне (type="modal")
+        <Form
+            onSubmit={handleSubmit(onSubmit, onError)}
+            type={onCloseModal ? 'modal' : 'regular'}
+        >
             <FormRow label="Cabin name" error={errors?.name?.message}>
                 <Input
                     type="text"
@@ -176,7 +186,12 @@ function CreateCabinForm({ cabinToUpdate = {} }) {
 
             <FormRow>
                 {/* type is an HTML attribute! */}
-                <Button variation="secondary" type="reset">
+                <Button
+                    // чтобы избежать ошибки, если onCloseModal не передан используем optional chaining
+                    onClick={() => onCloseModal?.()}
+                    variation="secondary"
+                    type="reset"
+                >
                     Cancel
                 </Button>
                 <Button disabled={isWorking}>
@@ -199,4 +214,5 @@ CreateCabinForm.propTypes = {
         description: PropTypes.string,
         image: PropTypes.string,
     }),
+    onCloseModal: PropTypes.func.isRequired,
 };
