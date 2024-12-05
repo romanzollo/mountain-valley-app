@@ -20,5 +20,6 @@
 -   React Hook Form
 -   prop-types
 -   React Portal
+-   Compound Components Pattern
 
 <!-- [Link to project](https://) -->
