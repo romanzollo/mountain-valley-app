@@ -96,7 +96,12 @@ function Row({ children }) {
     );
 }
 
-function Body({ children }) {}
+function Body({ data, render }) {
+    // если массив data пустой, то отображаем Empty
+    if (!data.length) return <Empty>No data to display at the moment</Empty>;
+
+    return <StyledBody>{data.map(render)}</StyledBody>;
+}
 
 // 4. Добавляем дочерние компоненты в качестве свойств к родительскому компоненту
 Table.Header = Header;
@@ -123,5 +128,6 @@ Row.propTypes = {
 };
 
 Body.propTypes = {
-    children: PropTypes.node.isRequired,
+    data: PropTypes.array.isRequired,
+    render: PropTypes.func.isRequired,
 };

@@ -21,5 +21,6 @@
 -   prop-types
 -   React Portal
 -   Compound Components Pattern
+-   Render Props Pattern
 
 <!-- [Link to project](https://) -->
