@@ -1,8 +1,10 @@
+import { cloneElement, createContext, useContext, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { HiXMark } from 'react-icons/hi2';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { HiXMark } from 'react-icons/hi2';
-import { createPortal } from 'react-dom';
-import { cloneElement, createContext, useContext, useState } from 'react';
+
+import { useOutsideClick } from '../hooks/useOutsideClick';
 
 const StyledModal = styled.div`
     position: fixed;
@@ -85,6 +87,9 @@ function Window({ children, name }) {
     // достаем из контекста openName и функции для его закрытия
     const { close, openName } = useContext(ModalContext);
 
+    // обработчик события закрытия модального окна (custom hook)
+    const ref = useOutsideClick(close);
+
     // проверяем какое окно открыто(в state компонента Modal), если имена совпадают то отображаем его содержимое
     if (name !== openName) return null;
 
@@ -92,7 +97,7 @@ function Window({ children, name }) {
     // основное применение react portal - это решение проблемы повторного использования компонента в разных местах приложения где установленно значение overflow: hidden в родительском компоненте которое будет обрезать наш компонент
     return createPortal(
         <Overlay>
-            <StyledModal>
+            <StyledModal ref={ref}>
                 <Button onClick={close}>
                     <HiXMark />
                 </Button>

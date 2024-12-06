@@ -214,5 +214,5 @@ CreateCabinForm.propTypes = {
         description: PropTypes.string,
         image: PropTypes.string,
     }),
-    onCloseModal: PropTypes.func.isRequired,
+    // onCloseModal: PropTypes.func.isRequired,
 };
