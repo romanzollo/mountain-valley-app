@@ -104,6 +104,7 @@ function Window({ children, name }) {
 
                 {/* передаем функцию закрытия onCloseModal в компонент children через cloneElement, т.к. в компоненте CreateCabinForm  
                 в форме в зависимости от наличия onCloseModal выбираем тип отображения стиля 'modal' или 'regular'  */}
+                {/* так же функция закрытия окна onCloseModal теперь доступен в props компонента Modal.Window !!!! */}
                 <div>{cloneElement(children, { onCloseModal: close })}</div>
             </StyledModal>
         </Overlay>,
