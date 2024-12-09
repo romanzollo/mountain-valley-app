@@ -118,6 +118,7 @@ Modal.Window = Window;
 
 export default Modal;
 
+// PropsTypes
 Modal.propTypes = {
     children: PropTypes.node.isRequired,
 };

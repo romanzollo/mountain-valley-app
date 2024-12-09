@@ -93,49 +93,51 @@ function CabinRow({ cabin }) {
                 <span>&mdash;</span>
             )}
             <div>
+                <button onClick={handleDuplicate} disabled={isCreating}>
+                    <HiSquare2Stack />
+                </button>
+
                 <Modal>
-                    <Menus.Menu>
-                        {/* id - чтобы при нажатии на toggle открывать только нужное меню(соответствующее id) */}
-                        <Menus.Toggle id={cabinId} />
+                    <Modal.Open opens="update">
+                        <button>
+                            <HiPencil />
+                        </button>
+                    </Modal.Open>
+                    <Modal.Window name="update">
+                        <CreateCabinForm cabinToUpdate={cabin} />
+                    </Modal.Window>
 
-                        <Menus.List id={cabinId}>
-                            {/* кнопка Duplicate */}
-                            <Menus.Button
-                                icon={<HiSquare2Stack />}
-                                onClick={handleDuplicate}
-                            >
-                                Duplicate
-                            </Menus.Button>
-
-                            {/* кнопка Edit */}
-                            <Modal.Open opens="update">
-                                <Menus.Button icon={<HiPencil />}>
-                                    Edit
-                                </Menus.Button>
-                            </Modal.Open>
-
-                            {/* кнопка Delete */}
-                            <Modal.Open opens="delete">
-                                <Menus.Button icon={<HiTrash />}>
-                                    Delete
-                                </Menus.Button>
-                            </Modal.Open>
-                        </Menus.List>
-
-                        {/* всплывающие окна редактирования и удаления которые открываются при нажатии на кнопки Edit и Delete */}
-                        <Modal.Window name="update">
-                            <CreateCabinForm cabinToUpdate={cabin} />
-                        </Modal.Window>
-
-                        <Modal.Window name="delete">
-                            <ConfirmDelete
-                                resourceName="cabin"
-                                disabled={isDeleting}
-                                onConfirm={() => deleteCabin(cabinId)}
-                            />
-                        </Modal.Window>
-                    </Menus.Menu>
+                    <Modal.Open opens="delete">
+                        <button>
+                            <HiTrash />
+                        </button>
+                    </Modal.Open>
+                    <Modal.Window name="delete">
+                        <ConfirmDelete
+                            resourceName="cabin"
+                            disabled={isDeleting}
+                            onConfirm={() => deleteCabin(cabinId)}
+                        />
+                    </Modal.Window>
                 </Modal>
+
+                <Menus.Menu>
+                    {/* id - для того чтобы при нажатии на toggle открывать только нужное меню(соответствующее id) */}
+                    <Menus.Toggle id={cabinId} />
+
+                    <Menus.List id={cabinId}>
+                        <Menus.Button
+                            icon={<HiSquare2Stack />}
+                            onClick={handleDuplicate}
+                        >
+                            Duplicate
+                        </Menus.Button>
+
+                        <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
+
+                        <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
+                    </Menus.List>
+                </Menus.Menu>
             </div>
         </Table.Row>
     );

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 
+// custom hook который следит за кликами вне компонента
 export function useOutsideClick(handler, listenCupturing = true) {
     const ref = useRef();
 

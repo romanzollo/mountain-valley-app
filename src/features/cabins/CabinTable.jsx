@@ -1,9 +1,8 @@
-import styled from 'styled-components';
-
 import Spinner from '../../ui/Spinner';
 import CabinRow from './CabinRow';
 import { useCabin } from './useCabin';
 import Table from '../../ui/Table';
+import Menus from '../../ui/Menus';
 
 // const TableHeader = styled.header`
 //     display: grid;
@@ -27,23 +26,29 @@ function CabinTable() {
     if (isLoading) return <Spinner />;
 
     return (
-        // передаем  значение columns в компонент Table чтобы использовать эти значения во всех его дочерних компонентах (reusable components)
-        <Table columns="0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">
-            <Table.Header>
-                <div></div>
-                <div>Cabin</div>
-                <div>Capacity</div>
-                <div>Price</div>
-                <div>Discount</div>
-                <div></div>
-            </Table.Header>
+        /* оборачиваем все содержимое в компонент Menus чтобы отслеживать какое меню открыто */
+        <Menus>
+            {/*  передаем значение columns в компонент Table чтобы использовать
+            эти значения во всех его дочерних компонентах (reusable components) */}
+            <Table columns="0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">
+                <Table.Header>
+                    <div></div>
+                    <div>Cabin</div>
+                    <div>Capacity</div>
+                    <div>Price</div>
+                    <div>Discount</div>
+                    <div></div>
+                </Table.Header>
 
-            {/* Render Props Pattern */}
-            <Table.Body
-                data={cabins}
-                render={(cabin) => <CabinRow key={cabin.id} cabin={cabin} />}
-            />
-        </Table>
+                {/* Render Props Pattern */}
+                <Table.Body
+                    data={cabins}
+                    render={(cabin) => (
+                        <CabinRow key={cabin.id} cabin={cabin} />
+                    )}
+                />
+            </Table>
+        </Menus>
     );
 }
 
