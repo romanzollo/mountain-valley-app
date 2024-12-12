@@ -100,6 +100,7 @@ function Body({ data, render }) {
     // если массив data пустой, то отображаем Empty
     if (!data.length) return <Empty>No data to display at the moment</Empty>;
 
+    // используем функцию render, переданную из CabinTable, чтобы отобразить данные (Render Props Pattern)
     return <StyledBody>{data.map(render)}</StyledBody>;
 }
 
