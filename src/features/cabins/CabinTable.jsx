@@ -18,13 +18,25 @@ function CabinTable() {
     // получаем текущее значение фильтра
     const filterValue = searchParams.get('discount') || 'all'; // all значение по умолчанию
 
-    // фильтруем данные
+    /* ФИЛЬТРАЦИЯ */
     let filteredCabins;
     if (filterValue === 'all') filteredCabins = cabins;
     if (filterValue === 'with-discount')
         filteredCabins = cabins.filter((cabin) => cabin.discount > 0);
     if (filterValue === 'no-discount')
         filteredCabins = cabins.filter((cabin) => cabin.discount === 0);
+
+    /* СОРТИРОВКА*/
+    const sortBy = searchParams.get('sortBy') || 'startDate-asc'; // startDate-asc значение по умолчанию
+
+    // разбиваем строку на два значения (имя значения и направление сортировки)
+    const [sortName, direction] = sortBy.split('-');
+    // определяем модификатор исходя из значения направления, если направление 'asc' то 1, если 'desc' то -1
+    const modifier = direction === 'asc' ? 1 : -1;
+    // сортируем данные
+    const sortedCabins = filteredCabins.sort(
+        (a, b) => (a[sortName] - b[sortName]) * modifier
+    ); // умножаем на модификатор чтобы изменить порядок сортировки
 
     return (
         /* оборачиваем все содержимое в компонент Menus чтобы отслеживать какое меню открыто */
@@ -43,7 +55,8 @@ function CabinTable() {
 
                 {/* Render Props Pattern */}
                 <Table.Body
-                    data={filteredCabins}
+                    // data={filteredCabins}
+                    data={sortedCabins}
                     render={(cabin) => (
                         <CabinRow key={cabin.id} cabin={cabin} />
                     )}

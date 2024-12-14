@@ -61,7 +61,14 @@ function Filter({ filterField, options }) {
                     key={option.value}
                     onClick={() => handleClick(option.value)}
                     // подсвечиваем активное состояние фильтра с помощью active (FilterButton => props => active)
-                    active={currentFilter === option.value}
+                    active={
+                        // fixed error (Received `true` for a non-boolean attribute `active`)
+                        currentFilter === option.value
+                            ? currentFilter.toString()
+                            : undefined
+                    }
+                    // делаем текущую кнопку фильтра некликабельной
+                    disabled={currentFilter === option.value}
                 >
                     {option.label}
                 </FilterButton>
