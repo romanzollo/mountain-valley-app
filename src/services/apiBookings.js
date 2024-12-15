@@ -7,7 +7,7 @@ export async function getBookings() {
         .from('bookings')
         // загружаем только те данные, которые нам действительно нужны
         .select(
-            'id, created_at, startDate, endDate, numNights, numGuests, totalPrice, status, guests(fullName, email), cabins(name)'
+            'id, created_at, startDate, endDate, numNights, numGuests, status, totalPrice, cabins(name), guests(fullName, email)'
         ); // !!! загружаем также смежную информацию о гостях и о хижинах которые забронировали чтобы отобразить эту информацию в таблице ( в нашем случае: guests(fullName, email) => имя гостя + email, cabins(name) => название хижины ) !!! //
     // !!! если например нам нужны все данные, то можно использовать .select('*') или так же все смежные данные тогда .select('*, guests(*), cabins(*)') !!! //
 
