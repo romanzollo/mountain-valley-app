@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import Spinner from '../../ui/Spinner';
 import CabinRow from './CabinRow';
-import { useCabin } from './useCabin';
+import { useCabins } from './useCabins';
 
 const Table = styled.div`
     border: 1px solid var(--color-grey-200);
@@ -30,7 +30,7 @@ const TableHeader = styled.header`
 
 function CabinTable() {
     // используем кастомный хук для получения данных из API
-    const { cabins, isLoading, error } = useCabin();
+    const { cabins, isLoading, error } = useCabins();
 
     if (isLoading) return <Spinner />;
 

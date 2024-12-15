@@ -2,18 +2,23 @@ import { useSearchParams } from 'react-router-dom';
 
 import Spinner from '../../ui/Spinner';
 import CabinRow from './CabinRow';
-import { useCabin } from './useCabin';
+import { useCabins } from './useCabins';
 import Table from '../../ui/Table';
 import Menus from '../../ui/Menus';
+import Empty from '../../ui/Empty';
 
 function CabinTable() {
     // используем кастомный хук для получения данных из API
-    const { cabins, isLoading } = useCabin();
+    const { cabins, isLoading } = useCabins();
 
     // получаем данные параметров из URL
     const [searchParams] = useSearchParams();
 
+    // показываем компонент Spinner если данные загружаются
     if (isLoading) return <Spinner />;
+
+    // если массив cabins пустой, то отображаем компонент Empty
+    if (!cabins.length) return <Empty resourceName="cabins" />;
 
     // получаем текущее значение фильтра
     const filterValue = searchParams.get('discount') || 'all'; // all значение по умолчанию

@@ -1,4 +1,4 @@
-# The Wild Oasis App
+# Mountain Valley App
 
 <!-- <img src="screenshot-1.png" width="500px"/>
 <img src="screenshot-2.png" width="500px"/>
