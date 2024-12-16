@@ -2,14 +2,30 @@ import { getToday } from '../utils/helpers';
 import supabase from './supabase';
 
 // получение всех бронирований
-export async function getBookings() {
-    const { data, error } = await supabase
+export async function getBookings({ filter, sortBy } = {}) {
+    let query = supabase
         .from('bookings')
         // загружаем только те данные, которые нам действительно нужны
         .select(
             'id, created_at, startDate, endDate, numNights, numGuests, status, totalPrice, cabins(name), guests(fullName, email)'
         ); // !!! загружаем также смежную информацию о гостях и о хижинах которые забронировали чтобы отобразить эту информацию в таблице ( в нашем случае: guests(fullName, email) => имя гостя + email, cabins(name) => название хижины ) !!! //
     // !!! если например нам нужны все данные, то можно использовать .select('*') или так же все смежные данные тогда .select('*, guests(*), cabins(*)') !!! //
+
+    /* 
+    пример запроса с условиями в superbase
+    select('....')
+        .eq('status', 'unconfirmed') - только бронирования в статусе "unconfirmed"
+        .gte('totalPrice', 5000) -  только бронирования, у которых цена больше или равна 5000
+    */
+
+    /* ФИЛЬТРАЦИЯ на стороне сервера */
+    // если есть фильтр тогда фильтруем на стороне сервера superbase
+    if (filter !== null)
+        query = query[filter.method || 'eq'](filter.field, filter.value); // method - метод фильтрации superbase для гибкости (задан в компоненте useBookings) если не задан то по умолчанию 'eq'
+
+    /* СОРТИРОВКА на стороне сервера */
+
+    const { data, error } = await query;
 
     if (error) {
         console.error(error);

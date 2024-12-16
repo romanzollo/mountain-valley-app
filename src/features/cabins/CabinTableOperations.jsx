@@ -8,6 +8,7 @@ function CabinTableOperations() {
         <TableOperations>
             {/* Фильтрация */}
             <Filter
+                // filterField - имя состояния которое записывается в URL
                 filterField="discount"
                 // передаем список опций в компонент Filter
                 options={[

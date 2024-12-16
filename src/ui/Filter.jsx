@@ -41,7 +41,7 @@ const FilterButton = styled.button`
 function Filter({ filterField, options }) {
     // useSearchParams - получить и установить значения в URL
     const [searchParams, setSearchParams] = useSearchParams();
-    // получаем текущее значение фильтра
+    // получаем текущее значение фильтра чтобы в дальнейшем при перезагрузке страницы не убрать активное состояние
     const currentFilter = searchParams.get(filterField) || options[0].value;
 
     function handleClick(value) {

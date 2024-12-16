@@ -10,7 +10,7 @@ function Cabins() {
             <Row type="horizontal">
                 <Heading as="h1">All cabins</Heading>
 
-                {/* компонент для работы с фильтрами */}
+                {/* компонент для работы с фильтром и сортировкой */}
                 <CabinTableOperations />
             </Row>
 
