@@ -23,6 +23,8 @@ export async function getBookings({ filter, sortBy } = {}) {
     if (filter !== null)
         query = query[filter.method || 'eq'](filter.field, filter.value); // method - метод фильтрации superbase для гибкости (задан в компоненте useBookings) если не задан то по умолчанию 'eq'
 
+    // --- !!!! т.к. getBookings функция а не компонент, мы не можем использовать хук useSearchParams. поэтому хук useSearchParams используется в компоненте useBookings. --- !!!! //
+
     /* СОРТИРОВКА на стороне сервера */
 
     const { data, error } = await query;
