@@ -20,12 +20,17 @@ export async function getBookings({ filter, sortBy } = {}) {
 
     /* ФИЛЬТРАЦИЯ на стороне сервера */
     // если есть фильтр тогда фильтруем на стороне сервера superbase
-    if (filter !== null)
+    if (filter)
         query = query[filter.method || 'eq'](filter.field, filter.value); // method - метод фильтрации superbase для гибкости (задан в компоненте useBookings) если не задан то по умолчанию 'eq'
 
     // --- !!!! т.к. getBookings функция а не компонент, мы не можем использовать хук useSearchParams. поэтому хук useSearchParams используется в компоненте useBookings. --- !!!! //
 
     /* СОРТИРОВКА на стороне сервера */
+    if (sortBy)
+        query = query.order(sortBy.field, {
+            // объект с настроками сортировки
+            ascending: sortBy.direction === 'asc', // если направление сортировки 'asc' то сортируем по возрастанию
+        });
 
     const { data, error } = await query;
 

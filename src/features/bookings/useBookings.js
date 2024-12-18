@@ -20,13 +20,24 @@ export function useBookings() {
             : { field: 'status', value: filterValue }; // создаем объект фильтра
     // пример создания объекта фильтра с методом для большей гибкости: { field: 'totalPrice', value: 5000, method: 'gte' }; method - метод фильтрации superbase для гибкости (по умолчанию 'eq' в apiBookings)
 
+    /* СОРТИРОВКА */
+    const sortByValue = searchParams.get('sortBy') || 'startDate-desc'; // получаем текущее значение сортировки из URL (startDate-desc, startDate-asc, totalPrice-desc, totalPrice-asc)
+
+    // разделяем sortBy на field и direction [startDate, desc]
+    const [field, direction] = sortByValue.split('-');
+
+    const sortBy = {
+        field,
+        direction,
+    };
+
     const {
         isLoading,
         data: bookings,
         error,
     } = useQuery({
-        queryKey: ['bookings', filter], // filter чтобы при изменении значения фильтра реакт обновлял данные на странице (как в массиве зависимостей useEffect)!!!
-        queryFn: () => getBookings({ filter }), // функция запроса(обязательно должна возвращать Promise)
+        queryKey: ['bookings', filter, sortBy], // filter и sortBy чтобы при изменении значения фильтра и сортировки реакт обновлял данные на странице (как в массиве зависимостей useEffect)!!!
+        queryFn: () => getBookings({ filter, sortBy }), // функция запроса(обязательно должна возвращать Promise)
     });
 
     return { bookings, isLoading, error };
