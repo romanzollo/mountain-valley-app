@@ -15,6 +15,8 @@
 -   Supabase
 -   React Query
 -   React Query Devtools
+-   Pagination with React Query
+-   Pre-Fetching with React Query
 -   React Hot Toast
 -   Date Fns
 -   React Hook Form

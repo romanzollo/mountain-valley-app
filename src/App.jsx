@@ -14,7 +14,8 @@ import PageNotFound from './pages/PageNotFound';
 import AppLayout from './ui/AppLayout';
 import { Toaster } from 'react-hot-toast';
 
-// React Query
+/* React Query */
+// Создаем клиента React Query с помощью конструктор new QueryClient
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
