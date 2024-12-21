@@ -9,7 +9,7 @@ import { useBookings } from './useBookings';
 
 function BookingTable() {
     // используем кастомный хук для получения данных из API
-    const { bookings, isLoading } = useBookings();
+    const { bookings, isLoading, count } = useBookings();
 
     // показываем компонент Spinner если данные загружаются
     if (isLoading) return <Spinner />;
@@ -41,7 +41,7 @@ function BookingTable() {
 
                 {/*  подключаем компонент Pagination */}
                 <Table.Footer>
-                    <Pagination count={25} />
+                    <Pagination count={count} />
                 </Table.Footer>
             </Table>
         </Menus>

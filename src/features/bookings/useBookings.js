@@ -26,19 +26,26 @@ export function useBookings() {
     // разделяем sortBy на field и direction [startDate, desc]
     const [field, direction] = sortByValue.split('-');
 
+    // создаем объект сортировки
     const sortBy = {
         field,
         direction,
     };
 
+    /* ПАГИНАЦИЯ */
+    // получаем текущую страницу
+    const page = !searchParams.get('page') // проверяем есть ли параметр page в URL и если его нет, то устанавливаем 1 страницу
+        ? 1
+        : Number(searchParams.get('page')); // переводим в число
+
     const {
         isLoading,
-        data: bookings,
+        data: { data: bookings, count } = {}, // чтобы не было ошибок - по умолчанию пустой объект
         error,
     } = useQuery({
-        queryKey: ['bookings', filter, sortBy], // filter и sortBy чтобы при изменении значения фильтра и сортировки реакт обновлял данные на странице (как в массиве зависимостей useEffect)!!!
-        queryFn: () => getBookings({ filter, sortBy }), // функция запроса(обязательно должна возвращать Promise)
+        queryKey: ['bookings', filter, sortBy, page], // filter, sortBy и page чтобы при изменении значения фильтра и сортировки реакт обновлял данные на странице (как в массиве зависимостей useEffect)!!!
+        queryFn: () => getBookings({ filter, sortBy, page }), // функция для получения данных
     });
 
-    return { bookings, isLoading, error };
+    return { bookings, isLoading, error, count };
 }

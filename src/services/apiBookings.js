@@ -1,13 +1,17 @@
 import { getToday } from '../utils/helpers';
+import { PAGE_SIZE } from '../utils/constants';
 import supabase from './supabase';
 
 // получение всех бронирований
-export async function getBookings({ filter, sortBy } = {}) {
+export async function getBookings({ filter, sortBy, page } = {}) {
     let query = supabase
         .from('bookings')
         // загружаем только те данные, которые нам действительно нужны
         .select(
-            'id, created_at, startDate, endDate, numNights, numGuests, status, totalPrice, cabins(name), guests(fullName, email)'
+            'id, created_at, startDate, endDate, numNights, numGuests, status, totalPrice, cabins(name), guests(fullName, email)',
+            {
+                count: 'exact', // встроенный в superbase алгоритм для подсчета количества строк в таблице
+            }
         ); // !!! загружаем также смежную информацию о гостях и о хижинах которые забронировали чтобы отобразить эту информацию в таблице ( в нашем случае: guests(fullName, email) => имя гостя + email, cabins(name) => название хижины ) !!! //
     // !!! если например нам нужны все данные, то можно использовать .select('*') или так же все смежные данные тогда .select('*, guests(*), cabins(*)') !!! //
 
@@ -32,14 +36,22 @@ export async function getBookings({ filter, sortBy } = {}) {
             ascending: sortBy.direction === 'asc', // если направление сортировки 'asc' то сортируем по возрастанию
         });
 
-    const { data, error } = await query;
+    /* ПАГИНАЦИЯ */
+    if (page) {
+        const from = (page - 1) * PAGE_SIZE;
+        const to = from + PAGE_SIZE - 1;
+
+        query = query.range(from, to); // range - метод из superbase для пагинации (откуда, до куда)
+    }
+
+    const { data, error, count } = await query;
 
     if (error) {
         console.error(error);
         throw new Error('Bookings could not be loaded');
     }
 
-    return data;
+    return { data, count };
 }
 
 // получение конкретного бронирования
