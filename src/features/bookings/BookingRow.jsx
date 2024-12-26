@@ -1,9 +1,12 @@
 import styled from 'styled-components';
 import { format, isToday } from 'date-fns';
 import PropTypes from 'prop-types';
+import { HiEye } from 'react-icons/hi2';
+import { useNavigate } from 'react-router-dom';
 
 import Tag from '../../ui/Tag';
 import Table from '../../ui/Table';
+import Menus from '../../ui/Menus';
 
 import { formatCurrency } from '../../utils/helpers';
 import { formatDistanceFromNow } from '../../utils/helpers';
@@ -50,6 +53,9 @@ function BookingRow({
         cabins: { name: cabinName },
     },
 }) {
+    // переключение между страницами
+    const navigate = useNavigate();
+
     // преобразовываем статус в цвет
     const statusToTagName = {
         unconfirmed: 'blue',
@@ -79,6 +85,19 @@ function BookingRow({
             <Tag type={statusToTagName[status]}>{status.replace('-', ' ')}</Tag>{' '}
             {/* status.replace('-', ' ') ===> checked-in => checked in */}
             <Amount>{formatCurrency(totalPrice)}</Amount>
+            {/* всплывающее меню для перехода к просмотру информации о каждом бронировании */}
+            <Menus.Menu>
+                {/* id - чтобы при нажатии на toggle открывать только нужное меню(соответствующее id) */}
+                <Menus.Toggle id={bookingId} />
+                <Menus.List id={bookingId}>
+                    <Menus.Button
+                        icon={<HiEye />}
+                        onClick={() => navigate(`/bookings/${bookingId}`)}
+                    >
+                        See details
+                    </Menus.Button>
+                </Menus.List>
+            </Menus.Menu>
         </Table.Row>
     );
 }

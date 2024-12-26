@@ -18,6 +18,7 @@ function BookingTable() {
     if (!bookings.length) return <Empty resourceName="bookings" />;
 
     return (
+        /* оборачиваем все содержимое в компонент Menus чтобы отслеживать какое всплывающее меню открыто */
         <Menus>
             {/*  передаем значение columns в компонент Table чтобы использовать
             эти значения во всех его дочерних компонентах (reusable components) */}
