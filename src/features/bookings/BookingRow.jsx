@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { format, isToday } from 'date-fns';
 import PropTypes from 'prop-types';
-import { HiEye } from 'react-icons/hi2';
+import { HiArrowDownOnSquare, HiEye } from 'react-icons/hi2';
 import { useNavigate } from 'react-router-dom';
 
 import Tag from '../../ui/Tag';
@@ -42,11 +42,11 @@ function BookingRow({
     // деструктуризация объекта
     booking: {
         id: bookingId,
-        created_at,
+        // created_at,
         startDate,
         endDate,
         numNights,
-        numGuests,
+        // numGuests,
         totalPrice,
         status,
         guests: { fullName: guestName, email },
@@ -96,6 +96,16 @@ function BookingRow({
                     >
                         See details
                     </Menus.Button>
+
+                    {/* показываем кнопку Check in только если бронирование еще не подтверждено */}
+                    {status === 'unconfirmed' && (
+                        <Menus.Button
+                            icon={<HiArrowDownOnSquare />}
+                            onClick={() => navigate(`/checkin/${bookingId}`)}
+                        >
+                            Check in
+                        </Menus.Button>
+                    )}
                 </Menus.List>
             </Menus.Menu>
         </Table.Row>

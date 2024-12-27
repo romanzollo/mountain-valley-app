@@ -124,7 +124,8 @@ export async function getStaysTodayActivity() {
     return data;
 }
 
-// обновление бронирования
+/* ОБНОВЛЕНИЕ БРОНИРОВАНИЯ */
+// id - id бронирования, obj - объект с новыми данными
 export async function updateBooking(id, obj) {
     const { data, error } = await supabase
         .from('bookings')

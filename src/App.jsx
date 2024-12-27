@@ -14,6 +14,7 @@ import Login from './pages/Login';
 import PageNotFound from './pages/PageNotFound';
 import Booking from './pages/Booking';
 import AppLayout from './ui/AppLayout';
+import Checkin from './pages/Checkin';
 
 /* React Query */
 // Создаем клиента React Query с помощью конструктор new QueryClient
@@ -57,6 +58,11 @@ function App() {
                         <Route
                             path="bookings/:bookingId"
                             element={<Booking />}
+                        />
+                        {/* страница регистрации бронирования */}
+                        <Route
+                            path="checkin/:bookingId"
+                            element={<Checkin />}
                         />
                         <Route path="cabins" element={<Cabins />} />
                         <Route path="users" element={<Users />} />

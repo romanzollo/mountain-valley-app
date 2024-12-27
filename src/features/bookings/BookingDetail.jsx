@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 import BookingDataBox from './BookingDataBox';
 import Row from '../../ui/Row';
@@ -22,6 +23,8 @@ function BookingDetail() {
     // получаем данные из кеша React Query с помощью кастомного хука
     const { booking, isLoading } = useBooking();
 
+    const navigate = useNavigate();
+
     // получаем функцию для перехода назад
     const moveBack = useMoveBack();
 
@@ -42,7 +45,7 @@ function BookingDetail() {
         <>
             <Row type="horizontal">
                 <HeadingGroup>
-                    <Heading as="h1">Booking #{bookingId}</Heading>
+                    <Heading as="h1">Booking №{bookingId}</Heading>
                     <Tag type={statusToTagName[status]}>
                         {status.replace('-', ' ')}
                     </Tag>
@@ -53,6 +56,13 @@ function BookingDetail() {
             <BookingDataBox booking={booking} />
 
             <ButtonGroup>
+                {/* показываемs кнопку Check in только если бронирование еще не подтверждено */}
+                {status === 'unconfirmed' && (
+                    <Button onClick={() => navigate(`/checkin/${bookingId}`)}>
+                        Check in
+                    </Button>
+                )}
+
                 <Button variation="secondary" onClick={moveBack}>
                     Back
                 </Button>

@@ -14,7 +14,7 @@ export function useBooking() {
         data: booking,
         error,
     } = useQuery({
-        queryKey: ['booking'], // ключ запроса
+        queryKey: ['booking', bookingId], // bookingId - обязательно! для обновления кэша при изменении номера бронирования
         queryFn: () => getBooking(bookingId), // функция запроса(обязательно должна возвращать Promise)
         retry: false, // убираем повторные запросы (по умолчанию библиотека React Query делает это в случае неудачи 3 раза, но в данном случае это не имеет смысла так как если бронирование не обнаружено, то его просто нет в базе данных)
     });
