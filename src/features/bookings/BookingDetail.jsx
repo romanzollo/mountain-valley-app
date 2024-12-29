@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { HiArrowUpOnSquare } from 'react-icons/hi2';
 
 import BookingDataBox from './BookingDataBox';
 import Row from '../../ui/Row';
@@ -12,6 +13,7 @@ import Spinner from '../../ui/Spinner';
 
 import { useMoveBack } from '../../hooks/useMoveBack';
 import { useBooking } from './useBooking';
+import { useCheckout } from '../check-in-out/useCheckout';
 
 const HeadingGroup = styled.div`
     display: flex;
@@ -22,6 +24,9 @@ const HeadingGroup = styled.div`
 function BookingDetail() {
     // получаем данные из кеша React Query с помощью кастомного хука
     const { booking, isLoading } = useBooking();
+
+    // получаем функцию для изменения статуса бронирования на checked-out
+    const { checkOut, isCheckOutLoading } = useCheckout();
 
     const navigate = useNavigate();
 
@@ -60,6 +65,17 @@ function BookingDetail() {
                 {status === 'unconfirmed' && (
                     <Button onClick={() => navigate(`/checkin/${bookingId}`)}>
                         Check in
+                    </Button>
+                )}
+
+                {/* показываем кнопку Check out только если бронирование уже подтверждено */}
+                {status === 'checked-in' && (
+                    <Button
+                        icon={<HiArrowUpOnSquare />}
+                        onClick={() => checkOut(bookingId)}
+                        disabled={isCheckOutLoading}
+                    >
+                        Check out
                     </Button>
                 )}
 

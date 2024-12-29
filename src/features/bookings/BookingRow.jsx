@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { format, isToday } from 'date-fns';
 import PropTypes from 'prop-types';
-import { HiArrowDownOnSquare, HiEye } from 'react-icons/hi2';
+import { HiArrowDownOnSquare, HiArrowUpOnSquare, HiEye } from 'react-icons/hi2';
 import { useNavigate } from 'react-router-dom';
 
 import Tag from '../../ui/Tag';
@@ -10,6 +10,7 @@ import Menus from '../../ui/Menus';
 
 import { formatCurrency } from '../../utils/helpers';
 import { formatDistanceFromNow } from '../../utils/helpers';
+import { useCheckout } from '../check-in-out/useCheckout';
 
 const Cabin = styled.div`
     font-size: 1.6rem;
@@ -55,6 +56,9 @@ function BookingRow({
 }) {
     // переключение между страницами
     const navigate = useNavigate();
+
+    // получаем функцию для изменения статуса бронирования на checked-out
+    const { checkOut, isCheckOutLoading } = useCheckout();
 
     // преобразовываем статус в цвет
     const statusToTagName = {
@@ -104,6 +108,17 @@ function BookingRow({
                             onClick={() => navigate(`/checkin/${bookingId}`)}
                         >
                             Check in
+                        </Menus.Button>
+                    )}
+
+                    {/* показываем кнопку Check out только если бронирование уже подтверждено */}
+                    {status === 'checked-in' && (
+                        <Menus.Button
+                            icon={<HiArrowUpOnSquare />}
+                            onClick={() => checkOut(bookingId)}
+                            disabled={isCheckOutLoading}
+                        >
+                            Check out
                         </Menus.Button>
                     )}
                 </Menus.List>

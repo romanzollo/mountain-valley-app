@@ -48,6 +48,9 @@ function Filter({ filterField, options }) {
         // 'discount' - имя состояния которое записывается в URL, 'value' - значение которое записывается в URL (discount=no-discount или discount=with-discount и т.д.)
         searchParams.set(filterField, value);
 
+        // всякий раз когда переключаем новый фильтр устанавливаем в URL параметр page(страница пагинации) на 1 - чтобы избежать ошибки когда например пагинация на 3 странице а при переключении фильтра у нас всего 1 страница пагинации так как данных совсем не много. То есть если останется в URL параметр page(страница пагинации) так же на 3 то будет ошибка!!!
+        if (searchParams.get('page')) searchParams.set('page', 1);
+
         // устанавливает параметры в URL
         setSearchParams(searchParams);
     }
