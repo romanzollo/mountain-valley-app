@@ -10,10 +10,13 @@ import ButtonGroup from '../../ui/ButtonGroup';
 import Button from '../../ui/Button';
 import ButtonText from '../../ui/ButtonText';
 import Spinner from '../../ui/Spinner';
+import ConfirmDelete from '../../ui/ConfirmDelete';
+import Modal from '../../ui/Modal';
 
 import { useMoveBack } from '../../hooks/useMoveBack';
 import { useBooking } from './useBooking';
 import { useCheckout } from '../check-in-out/useCheckout';
+import { useDeleteBooking } from './useDeleteBooking';
 
 const HeadingGroup = styled.div`
     display: flex;
@@ -27,6 +30,9 @@ function BookingDetail() {
 
     // получаем функцию для изменения статуса бронирования на checked-out
     const { checkOut, isCheckOutLoading } = useCheckout();
+
+    // используем кастомный хук для удаления бронирования
+    const { deleteBooking, isDeleting } = useDeleteBooking();
 
     const navigate = useNavigate();
 
@@ -67,6 +73,27 @@ function BookingDetail() {
                         Check in
                     </Button>
                 )}
+
+                <Modal>
+                    {/* всплывающее окно для подтверждения удаления бронирования */}
+                    <Modal.Open opens="delete">
+                        <Button variation="danger">Delete booking</Button>
+                    </Modal.Open>
+
+                    <Modal.Window name="delete">
+                        {/* компонент всплывающего окна для подтверждения удаления */}
+                        <ConfirmDelete
+                            resourceName="booking"
+                            disabled={isDeleting}
+                            onConfirm={() =>
+                                deleteBooking(bookingId, {
+                                    // встроенный в React Query объект для настроек
+                                    onSettled: () => navigate(-1), // перенаправляем пользователя на предыдущую страницу после удаления бронирования
+                                })
+                            }
+                        />
+                    </Modal.Window>
+                </Modal>
 
                 {/* показываем кнопку Check out только если бронирование уже подтверждено */}
                 {status === 'checked-in' && (
