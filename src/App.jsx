@@ -15,6 +15,7 @@ import PageNotFound from './pages/PageNotFound';
 import Booking from './pages/Booking';
 import AppLayout from './ui/AppLayout';
 import Checkin from './pages/Checkin';
+import ProtectedRoute from './ui/ProtectedRoute';
 
 /* React Query */
 // Создаем клиента React Query с помощью конструктор new QueryClient
@@ -44,7 +45,14 @@ function App() {
                 }}
             >
                 <Routes>
-                    <Route element={<AppLayout />}>
+                    <Route
+                        element={
+                            /* оборачиваем в ProtectedRoute для проверки аутентификации, т.е. только для авторизованных пользователей */
+                            <ProtectedRoute>
+                                <AppLayout />
+                            </ProtectedRoute>
+                        }
+                    >
                         {/* Navigate - для редиректа по умолчанию на страницу dashboard */}
                         <Route
                             index

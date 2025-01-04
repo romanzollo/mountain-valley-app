@@ -23,7 +23,18 @@ function LoginForm() {
         if (!email || !password) return;
 
         // вызываем функцию логина
-        login({ email, password });
+        login(
+            { email, password },
+            // добавляем опции
+            {
+                // onSettled - встроенный в React Query обработчик
+                onSettled: () => {
+                    // очищаем поля email и пароля
+                    setEmail('');
+                    setPassword('');
+                },
+            }
+        );
     }
 
     return (

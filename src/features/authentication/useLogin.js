@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
@@ -6,6 +6,8 @@ import { login as loginApi } from '../../services/apiAuth';
 
 // кастомный хук логина
 export function useLogin() {
+    const queryClient = useQueryClient();
+
     // используем хук useNavigate для навигации
     const navigate = useNavigate();
 
@@ -14,7 +16,10 @@ export function useLogin() {
         // функция-мутации может принимать только один аргумент поэтому передаем ей объект и сразу его деструктуризируем
         mutationFn: ({ email, password }) => loginApi({ email, password }),
 
-        onSuccess: () => {
+        onSuccess: (user) => {
+            // помещаем "в ручную" данные пользователя в кэш с помощью React Query
+            queryClient.setQueriesData(['user'], user);
+
             // перенаправляем пользователя на главную страницу
             navigate('/dashboard');
         },
