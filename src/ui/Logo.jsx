@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+// --- styled components --- //
 const StyledLogo = styled.div`
     text-align: center;
 `;
@@ -10,6 +11,7 @@ const Img = styled.img`
     width: auto;
 `;
 
+// --- components --- //
 function Logo() {
     return (
         <StyledLogo>

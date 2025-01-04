@@ -13,6 +13,7 @@ import { Flag } from '../../ui/Flag';
 
 import { formatDistanceFromNow, formatCurrency } from '../../utils/helpers';
 
+// --- styled-components --- //
 const StyledBookingDataBox = styled.section`
     /* Box */
     background-color: var(--color-grey-0);
@@ -102,6 +103,7 @@ const Footer = styled.footer`
     text-align: right;
 `;
 
+// --- components --- //
 // чисто презентационный компонент
 function BookingDataBox({ booking }) {
     // деструктуризация
@@ -207,6 +209,7 @@ function BookingDataBox({ booking }) {
 
 export default BookingDataBox;
 
+// --- prop-types --- //
 BookingDataBox.propTypes = {
     booking: PropTypes.shape({
         id: PropTypes.number,

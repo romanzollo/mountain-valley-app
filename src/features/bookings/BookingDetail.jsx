@@ -18,12 +18,14 @@ import { useBooking } from './useBooking';
 import { useCheckout } from '../check-in-out/useCheckout';
 import { useDeleteBooking } from './useDeleteBooking';
 
+// --- styled-components --- //
 const HeadingGroup = styled.div`
     display: flex;
     gap: 2.4rem;
     align-items: center;
 `;
 
+// --- components --- //
 function BookingDetail() {
     // получаем данные из кеша React Query с помощью кастомного хука
     const { booking, isLoading } = useBooking();
