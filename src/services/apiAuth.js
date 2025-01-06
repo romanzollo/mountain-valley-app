@@ -26,11 +26,17 @@ export async function getCurrentUser() {
     // извлекаем данные о текущем пользователе из Supabase
     const { data, error } = await supabase.auth.getUser();
 
-    console.log(data);
-
     // проверяем на наличие ошибки
     if (error) throw new Error(error.message);
 
     // возвращаем данные (только user)
     return data?.user;
+}
+
+// функция выхода из системы
+export async function logout() {
+    const { error } = await supabase.auth.signOut(); // сохраняем объект с ошибками - error, чтобы в дальнейшем использовать этот объект или отобразить ошибку
+
+    // если есть ошибка выводим ее
+    if (error) throw new Error(error.message);
 }

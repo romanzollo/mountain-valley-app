@@ -12,6 +12,6 @@ export function useUser() {
         user,
         isLoading,
         // если user.role === 'authenticated' - то пользователь аутентифицирован
-        isAuthenticated: user?.role === 'authenticated',
+        isAuthenticated: user?.role === 'authenticated', // true или false
     };
 }

@@ -21,7 +21,7 @@ export function useLogin() {
             queryClient.setQueriesData(['user'], user);
 
             // перенаправляем пользователя на главную страницу
-            navigate('/dashboard');
+            navigate('/dashboard', { replace: true }); // { replace: true } - заменяет текущий URL в истории браузера на новый чтобы не было возможности нажать назад в браузере
         },
 
         onError: (err) => {
