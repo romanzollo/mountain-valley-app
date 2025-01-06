@@ -18,7 +18,7 @@ export function useLogin() {
 
         onSuccess: (user) => {
             // помещаем "в ручную" данные пользователя в кэш с помощью React Query
-            queryClient.setQueriesData(['user'], user);
+            queryClient.setQueryData(['user'], user.user);
 
             // перенаправляем пользователя на главную страницу
             navigate('/dashboard', { replace: true }); // { replace: true } - заменяет текущий URL в истории браузера на новый чтобы не было возможности нажать назад в браузере
