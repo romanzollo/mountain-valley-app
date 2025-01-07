@@ -5,15 +5,30 @@ import Form from '../../ui/Form';
 import FormRow from '../../ui/FormRow';
 import Input from '../../ui/Input';
 
+import { useSignup } from './useSignup';
+
 // Email regex: /\S+@\S+\.\S+/
 
 function SignupForm() {
+    // используем кастомный хук для регистрации нового пользователя
+    const { signup, isLoading } = useSignup();
+
     // React Hook Form
-    const { register, handleSubmit, formState, getValues } = useForm(); // register - функция, которая регистрирует входные данные (фундаментальная функция React Hook Form)
+    const { register, handleSubmit, formState, getValues, reset } = useForm(); // register - функция, которая регистрирует входные данные (фундаментальная функция React Hook Form)
     const { errors } = formState; // объект ошибок
 
-    function onSubmit(data) {
-        console.log(data);
+    function onSubmit({ fullName, email, password }) {
+        // вызываем функцию регистрации
+        signup(
+            { fullName, email, password },
+            {
+                // onSettled - встроенный в React Query обработчик
+                onSettled: () => {
+                    // очищаем поля email и пароля
+                    reset();
+                },
+            }
+        );
     }
 
     return (
@@ -24,6 +39,7 @@ function SignupForm() {
                 <Input
                     type="text"
                     id="fullName"
+                    disabled={isLoading}
                     // React Hook Form
                     {...register('fullName', {
                         required: 'This field is required',
@@ -35,6 +51,7 @@ function SignupForm() {
                 <Input
                     type="email"
                     id="email"
+                    disabled={isLoading}
                     // React Hook Form
                     {...register('email', {
                         required: 'This field is required',
@@ -54,6 +71,7 @@ function SignupForm() {
                 <Input
                     type="password"
                     id="password"
+                    disabled={isLoading}
                     {...register('password', {
                         required: 'This field is required',
                         // minLength - встроенная опция в React Hook Form для настройки валидации (минимальная длина пароля)
@@ -73,6 +91,7 @@ function SignupForm() {
                 <Input
                     type="password"
                     id="passwordConfirm"
+                    disabled={isLoading}
                     {...register('passwordConfirm', {
                         required: 'This field is required',
                         // проверяем совпадение паролей через валидационную функцию
@@ -86,10 +105,10 @@ function SignupForm() {
 
             <FormRow>
                 {/* type — это атрибут HTML! */}
-                <Button variation="secondary" type="reset">
+                <Button variation="secondary" type="reset" disabled={isLoading}>
                     Cancel
                 </Button>
-                <Button>Create new user</Button>
+                <Button disabled={isLoading}>Create new user</Button>
             </FormRow>
         </Form>
     );
