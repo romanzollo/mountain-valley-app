@@ -105,7 +105,13 @@ function SignupForm() {
 
             <FormRow>
                 {/* type — это атрибут HTML! */}
-                <Button variation="secondary" type="reset" disabled={isLoading}>
+                <Button
+                    variation="secondary"
+                    type="reset"
+                    disabled={isLoading}
+                    // отчищаем валидационные сообщения об ошибках
+                    onClick={reset}
+                >
                     Cancel
                 </Button>
                 <Button disabled={isLoading}>Create new user</Button>

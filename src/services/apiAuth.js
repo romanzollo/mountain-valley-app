@@ -1,4 +1,4 @@
-import supabase from './supabase';
+import supabase, { supabaseUrl } from './supabase';
 
 // функция регистрации нового пользователя
 export async function signup({ fullName, email, password }) {
@@ -61,4 +61,52 @@ export async function logout() {
 
     // если есть ошибка выводим ее
     if (error) throw new Error(error.message);
+}
+
+// функция обновления данных о текущем пользователе
+export async function updateCurrentUser({ fullName, password, avatar }) {
+    // 1. обновляем пароль или имя пользователя (пароль и имя одновременно мы не обновляем т.к. формы для обновления пароля и имени разные)
+
+    // создаем объект с данными
+    let updateData;
+
+    // формируем объект updateData в соответствии с получаемыми данными
+    // только одно из этих двух условий может быть true одновременно
+    if (password) updateData = { password };
+    if (fullName) updateData = { data: { fullName } }; // т.к. в функции signup, при регистрации нового пользователя мы указали что: data: { fullName, avatar: '' }
+
+    // узнаем какой пользователь вошел в систему и обновляем данные
+    const { data, error } = await supabase.auth.updateUser(updateData); // error - потенциальные ошибки
+
+    // если есть ошибка выводим ее
+    if (error) throw new Error(error.message);
+
+    // если нет аватара, то возвращаем данные (дальше код не выполнится)
+    if (!avatar) return data;
+
+    // 2. формируем и загружаем новый аватар
+    const fileName = `avatar-${data.user.id}-${Math.random()}`; // создаем уникальное имя файла
+
+    // загружаем фаил в хранилище Supabase (Storage => Avatars)
+    // (так же не забываем изменить политику доступа, "для только аутентифицированных пользователей", в Supabase )
+    const { error: storageError } = await supabase.storage
+        .from('avatars')
+        .upload(fileName, avatar);
+
+    // если есть ошибка выводим ее
+    if (storageError) throw new Error(storageError.message);
+
+    // 3. обновляем аватар пользователя
+    const { data: updateUser, error: updateError } = supabase.auth.updateUser({
+        // структуру данных data мы задавали в функции signup
+        data: {
+            avatar: `${supabaseUrl}/storage/v1/object/public/avatars/${fileName}`, // путем обновления URL адреса изображения аватара на клиенте
+        },
+    });
+
+    // если есть ошибка выводим ее
+    if (updateError) throw new Error(updateError.message);
+
+    // если нет ошибок возвращаем данные обновленного пользователя
+    return updateUser;
 }
