@@ -97,12 +97,13 @@ export async function updateCurrentUser({ fullName, password, avatar }) {
     if (storageError) throw new Error(storageError.message);
 
     // 3. обновляем аватар пользователя
-    const { data: updateUser, error: updateError } = supabase.auth.updateUser({
-        // структуру данных data мы задавали в функции signup
-        data: {
-            avatar: `${supabaseUrl}/storage/v1/object/public/avatars/${fileName}`, // путем обновления URL адреса изображения аватара на клиенте
-        },
-    });
+    const { data: updateUser, error: updateError } =
+        await supabase.auth.updateUser({
+            // структуру данных data мы задавали в функции signup
+            data: {
+                avatar: `${supabaseUrl}/storage/v1/object/public/avatars/${fileName}`, // путем обновления URL адреса изображения аватара на клиенте
+            },
+        });
 
     // если есть ошибка выводим ее
     if (updateError) throw new Error(updateError.message);

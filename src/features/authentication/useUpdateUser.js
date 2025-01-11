@@ -9,12 +9,12 @@ export function useUpdateUser() {
     /* === создаем мутацию для обновления данных пользователя (React Query) === */
     const { mutate: updateUser, isLoading: isUpdating } = useMutation({
         mutationFn: updateCurrentUser,
-        onSuccess: () => {
+        onSuccess: ({ user }) => {
             // выводим уведомление с помощью react-hot-toast
             toast.success('User account successfully updated');
 
             // способ обновления кэша "в ручную" при необходимости (для этого user передать в качестве аргумента функции onSuccess)
-            // queryClient.setQueryData('user', user);
+            // queryClient.setQueryData(['user'], user);
 
             // обновляем кэш
             queryClient.invalidateQueries({
