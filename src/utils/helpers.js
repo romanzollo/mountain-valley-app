@@ -17,10 +17,11 @@ export const getToday = function (options = {}) {
 
     // Это необходимо для сравнения с created_at из Supabase, потому что он не равен 0.0.0.0, поэтому нам нужно установить дату как КОНЕЦ дня, когда мы сравниваем ее с более ранними датами.
     if (options?.end)
-        // Set to the last second of the day
+        // Установить на последнюю секунду дня
         today.setUTCHours(23, 59, 59, 999);
     else today.setUTCHours(0, 0, 0, 0);
-    return today.toISOString();
+
+    return today.toISOString(); // возвращаем строку даты в формате ISO
 };
 
 export const formatCurrency = (value) =>

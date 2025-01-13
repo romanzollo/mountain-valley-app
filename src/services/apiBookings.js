@@ -71,12 +71,13 @@ export async function getBooking(id) {
 }
 
 // возвращает все BOOKINGS, созданные после указанной даты. Полезно, например, для получения бронирований, созданных за последние 30 дней.
+// date - должен быть в формате 'YYYY-MM-DD' (ISO String) так как в superbase дата хранится в таком  формате
 export async function getBookingsAfterDate(date) {
     const { data, error } = await supabase
-        .from('bookings')
-        .select('created_at, totalPrice, extrasPrice')
-        .gte('created_at', date)
-        .lte('created_at', getToday({ end: true }));
+        .from('bookings') // откуда берем данные
+        .select('created_at, totalPrice, extrasPrice') // выбираем нужные столбцы
+        .gte('created_at', date) // фильтруем с даты создания и до нужной даты
+        .lte('created_at', getToday({ end: true })); // фильтруем с даты создания и до сегодняшнего дня ({ end: true } - установить дату как КОНЕЦ дня, когда мы сравниваем ее с более ранними датами. Очень важно!)
 
     if (error) {
         console.error(error);
@@ -86,14 +87,13 @@ export async function getBookingsAfterDate(date) {
     return data;
 }
 
-// возвращает все пребывания, созданные после указанной даты.
+// возвращает все данные о проживании, созданные после указанной даты.
 export async function getStaysAfterDate(date) {
     const { data, error } = await supabase
-        .from('bookings')
-        // .select('*')
-        .select('*, guests(fullName)')
-        .gte('startDate', date)
-        .lte('startDate', getToday());
+        .from('bookings') // откуда берем данные
+        .select('*, guests(fullName)') // выбираем нужные столбцы
+        .gte('startDate', date) // фильтруем с даты начала бронирования и до нужной даты
+        .lte('startDate', getToday()); // фильтруем с даты начала бронирования и до сегодняшнего дня
 
     if (error) {
         console.error(error);

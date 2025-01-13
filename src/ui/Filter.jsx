@@ -2,6 +2,7 @@ import { useSearchParams } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
 
+// --- styled components --- //
 const StyledFilter = styled.div`
     border: 1px solid var(--color-grey-100);
     background-color: var(--color-grey-0);
@@ -37,7 +38,9 @@ const FilterButton = styled.button`
     }
 `;
 
-// filterField - имя состояния которое записывается в URL, options - массив объектов { value: 'no-discount', label: 'No discount' } - передаем из CabinTableOperations
+// --- components --- //
+
+// filterField - имя состояния которое записывается в URL, options - массив объектов вида: [{ value: 'no-discount', label: 'No discount' }] - передаем из CabinTableOperations, DashboardFilter
 function Filter({ filterField, options }) {
     // useSearchParams - получить и установить значения в URL
     const [searchParams, setSearchParams] = useSearchParams();
@@ -82,6 +85,7 @@ function Filter({ filterField, options }) {
 
 export default Filter;
 
+// --- prop-types --- //
 Filter.propTypes = {
     filterField: PropTypes.string.isRequired,
     options: PropTypes.arrayOf(

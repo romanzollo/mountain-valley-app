@@ -1,5 +1,11 @@
 import styled from 'styled-components';
 
+import Spinner from '../../ui/Spinner';
+
+import { useRecentBookings } from './useRecentBookings';
+import { useRecentStays } from './useRecentStays';
+
+// --- styled components --- //
 const StyledDashboardLayout = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -7,7 +13,16 @@ const StyledDashboardLayout = styled.div`
     gap: 2.4rem;
 `;
 
+// --- components --- //
 function DashboardLayout() {
+    // получаем данные о последних бронированиях с помощью кастомного хука
+    const { isLoading: isLoadingBookings, bookings } = useRecentBookings();
+    // получаем данные о последних "проживаниях" с помощью кастомного хука
+    const { isLoading: isLoadingStays, stays } = useRecentStays();
+
+    // показываем компонент Spinner если данные загружаются
+    if (isLoadingBookings || isLoadingStays) return <Spinner />;
+
     return (
         <StyledDashboardLayout>
             <div>Statistics</div>
