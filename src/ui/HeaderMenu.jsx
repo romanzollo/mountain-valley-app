@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import Logout from '../features/authentication/Logout';
 import ButtonIcon from './ButtonIcon';
+import DarkModeToggle from './DarkModeToggle';
 
 // --- styled components --- //
 const StyledHeaderMenu = styled.ul`
@@ -23,6 +24,11 @@ function HeaderMenu() {
                 <ButtonIcon onClick={() => navigate('/account')}>
                     <HiOutlineUser />
                 </ButtonIcon>
+            </li>
+
+            {/* создаем кнопку для переключения на темный режим */}
+            <li>
+                <DarkModeToggle />
             </li>
 
             {/* создаем кнопку для выхода */}

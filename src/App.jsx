@@ -16,6 +16,7 @@ import Booking from './pages/Booking';
 import AppLayout from './ui/AppLayout';
 import Checkin from './pages/Checkin';
 import ProtectedRoute from './ui/ProtectedRoute';
+import { DarkModeProvider } from './context/DarkModeContext';
 
 /* React Query */
 // Создаем клиента React Query с помощью конструктор new QueryClient
@@ -30,82 +31,86 @@ const queryClient = new QueryClient({
 
 function App() {
     return (
-        // React Query Provider позволяет использовать React Query во всем приложении
-        <QueryClientProvider client={queryClient}>
-            {/* подключаем к приложению инструменты разработчика */}
-            <ReactQueryDevtools initialIsOpen={false} />
+        // оборачиваем в DarkModeProvider для использования контекста переключения темы
+        <DarkModeProvider>
+            {/* React Query Provider позволяет использовать React Query во всем
+            приложении */}
+            <QueryClientProvider client={queryClient}>
+                {/* подключаем к приложению инструменты разработчика */}
+                <ReactQueryDevtools initialIsOpen={false} />
 
-            {/* Глобальные стили */}
-            <GlobalStyles />
-            <BrowserRouter
-                future={{
-                    // future flags
-                    v7_relativeSplatPath: true,
-                    v7_startTransition: true,
-                }}
-            >
-                <Routes>
-                    <Route
-                        element={
-                            /* оборачиваем в ProtectedRoute для проверки аутентификации, т.е. только для авторизованных пользователей */
-                            <ProtectedRoute>
-                                <AppLayout />
-                            </ProtectedRoute>
-                        }
-                    >
-                        {/* Navigate - для редиректа по умолчанию на страницу dashboard */}
+                {/* Глобальные стили */}
+                <GlobalStyles />
+                <BrowserRouter
+                    future={{
+                        // future flags
+                        v7_relativeSplatPath: true,
+                        v7_startTransition: true,
+                    }}
+                >
+                    <Routes>
                         <Route
-                            index
-                            element={<Navigate replace to="dashboard" />}
-                        />
+                            element={
+                                /* оборачиваем в ProtectedRoute для проверки аутентификации, т.е. только для авторизованных пользователей */
+                                <ProtectedRoute>
+                                    <AppLayout />
+                                </ProtectedRoute>
+                            }
+                        >
+                            {/* Navigate - для редиректа по умолчанию на страницу dashboard */}
+                            <Route
+                                index
+                                element={<Navigate replace to="dashboard" />}
+                            />
 
-                        <Route path="dashboard" element={<Dashboard />} />
+                            <Route path="dashboard" element={<Dashboard />} />
 
-                        <Route path="bookings" element={<Bookings />} />
-                        {/* страница информации о бронировании */}
-                        <Route
-                            path="bookings/:bookingId"
-                            element={<Booking />}
-                        />
-                        {/* страница регистрации бронирования */}
-                        <Route
-                            path="checkin/:bookingId"
-                            element={<Checkin />}
-                        />
-                        <Route path="cabins" element={<Cabins />} />
-                        <Route path="users" element={<Users />} />
-                        <Route path="settings" element={<Settings />} />
-                        <Route path="account" element={<Account />} />
-                    </Route>
+                            <Route path="bookings" element={<Bookings />} />
+                            {/* страница информации о бронировании */}
+                            <Route
+                                path="bookings/:bookingId"
+                                element={<Booking />}
+                            />
+                            {/* страница регистрации бронирования */}
+                            <Route
+                                path="checkin/:bookingId"
+                                element={<Checkin />}
+                            />
+                            <Route path="cabins" element={<Cabins />} />
+                            <Route path="users" element={<Users />} />
+                            <Route path="settings" element={<Settings />} />
+                            <Route path="account" element={<Account />} />
+                        </Route>
 
-                    {/* login page и page not found будут отдельными страницами, и не будут находиться внутри AppLayout */}
-                    <Route path="login" element={<Login />} />
-                    <Route path="*" element={<PageNotFound />} />
-                </Routes>
-            </BrowserRouter>
+                        {/* login page и page not found будут отдельными страницами, и не будут находиться внутри AppLayout */}
+                        <Route path="login" element={<Login />} />
+                        <Route path="*" element={<PageNotFound />} />
+                    </Routes>
+                </BrowserRouter>
 
-            {/* горячие уведомления */}
-            <Toaster
-                position="top-center"
-                gutter={12}
-                containerStyle={{ margin: '8px' }}
-                toastOptions={{
-                    success: {
-                        duration: 3000,
-                    },
-                    error: {
-                        duration: 5000,
-                    },
-                    style: {
-                        fontSize: '16px',
-                        maxWidth: '500px',
-                        padding: '16px 24px',
-                        backgroundColor: 'var(--color-grey-0)',
-                        color: 'var(--color-grey-700)',
-                    },
-                }}
-            />
-        </QueryClientProvider>
+                {/* горячие уведомления */}
+                <Toaster
+                    position="top-center"
+                    gutter={12}
+                    containerStyle={{ margin: '8px' }}
+                    toastOptions={{
+                        success: {
+                            duration: 3000,
+                        },
+                        error: {
+                            duration: 5000,
+                        },
+                        style: {
+                            fontSize: '16px',
+                            maxWidth: '500px',
+                            padding: '16px 24px',
+                            backgroundColor: 'var(--color-grey-0)',
+                            color: 'var(--color-grey-700)',
+                        },
+                    }}
+                />
+            </QueryClientProvider>
+        </DarkModeProvider>
     );
 }
 
