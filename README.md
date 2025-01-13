@@ -24,5 +24,8 @@
 -   React Portal
 -   Compound Components Pattern
 -   Render Props Pattern
+-   Context API
+-   Custom Hooks
+-   Dark Mode
 
 <!-- [Link to project](https://) -->
