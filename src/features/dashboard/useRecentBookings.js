@@ -23,5 +23,5 @@ export function useRecentBookings() {
         queryFn: () => getBookingsAfterDate(queryDate), // функция запроса
     });
 
-    return { bookings, isLoading };
+    return { bookings, isLoading, numDays };
 }
