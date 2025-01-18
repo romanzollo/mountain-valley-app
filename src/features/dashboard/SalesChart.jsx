@@ -82,7 +82,11 @@ function SalesChart({ bookings, numDays }) {
 
     return (
         <StyledSalesChart>
-            <Heading as="h2">Sales</Heading>
+            <Heading as="h2">
+                {/* формируем текст типа: "Sales from 21 Dec - 27 Dec, 2025" */}
+                Sales from {format(allDates.at(0), 'MMM dd')} &mdash;{' '}
+                {format(allDates.at(-1), 'MMM dd, yyyy')}
+            </Heading>
 
             {/* адаптивный контейнер  */}
             <ResponsiveContainer height={300} width="100%">

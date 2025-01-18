@@ -7,6 +7,7 @@ import SalesChart from './SalesChart';
 import { useRecentBookings } from './useRecentBookings';
 import { useRecentStays } from './useRecentStays';
 import { useCabins } from '../cabins/useCabins';
+import DurationChart from './DurationChart';
 
 // --- styled components --- //
 const StyledDashboardLayout = styled.div`
@@ -46,7 +47,8 @@ function DashboardLayout() {
                 cabinCount={cabins.length} // количество кабин
             />
             <div>Today&apos;s activities</div> {/* Today's activities */}
-            <div>Chart stay durations</div>
+            {/* круговая диаграмма продолжительности */}
+            <DurationChart confirmedStays={confirmedStays} />
             {/* график продаж */}
             <SalesChart bookings={bookings} numDays={numDays} />{' '}
         </StyledDashboardLayout>
