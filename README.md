@@ -27,5 +27,6 @@
 -   Context API
 -   Custom Hooks
 -   Dark Mode
+-   Recharts Library (charts)
 
 <!-- [Link to project](https://) -->
