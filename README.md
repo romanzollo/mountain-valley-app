@@ -28,5 +28,6 @@
 -   Custom Hooks
 -   Dark Mode
 -   Recharts Library (charts)
+-   React Error Boundary
 
 <!-- [Link to project](https://) -->
