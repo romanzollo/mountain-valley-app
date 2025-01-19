@@ -103,19 +103,23 @@ export async function getStaysAfterDate(date) {
     return data;
 }
 
-// активность означает, что сегодня происходит заезд или выезд.
+// функция возвращает все активные на сегодняшнюю дату бронирования (checked-in и checked-out)
 export async function getStaysTodayActivity() {
     const { data, error } = await supabase
-        .from('bookings')
-        .select('*, guests(fullName, nationality, countryFlag)')
+        .from('bookings') // откуда берем данные
+        .select('*, guests(fullName, nationality, countryFlag)') // выбираем нужные столбцы
         .or(
             `and(status.eq.unconfirmed,startDate.eq.${getToday()}),and(status.eq.checked-in,endDate.eq.${getToday()})`
         )
         .order('created_at');
 
-    // Эквивалентно этому. Но, запрашивая это, мы загружаем только те данные, которые нам действительно нужны, иначе нам понадобятся ВСЕ когда-либо созданные бронирования.
-    // (stay.status === 'unconfirmed' && isToday(new Date(stay.startDate))) ||
-    // (stay.status === 'checked-in' && isToday(new Date(stay.endDate)))
+    /* .or(
+            `and(status.eq.unconfirmed,startDate.eq.${getToday()}),and(status.eq.checked-in,endDate.eq.${getToday()})`
+        ) 
+    в superbase */
+    //  одно и то же что:
+    // (stay.status === 'unconfirmed' && isToday(new Date(stay.startDate))) || (stay.status === 'checked-in' && isToday(new Date(stay.endDate)))
+    // "статус бронирования неподтвержден и начало сегодня" || "статус бронирования заселен и конец сегодня"
 
     if (error) {
         console.error(error);

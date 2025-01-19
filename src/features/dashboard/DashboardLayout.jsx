@@ -3,11 +3,12 @@ import styled from 'styled-components';
 import Spinner from '../../ui/Spinner';
 import Stats from './Stats';
 import SalesChart from './SalesChart';
+import DurationChart from './DurationChart';
+import TodayActivity from '../check-in-out/TodayActivity';
 
 import { useRecentBookings } from './useRecentBookings';
 import { useRecentStays } from './useRecentStays';
 import { useCabins } from '../cabins/useCabins';
-import DurationChart from './DurationChart';
 
 // --- styled components --- //
 const StyledDashboardLayout = styled.div`
@@ -26,11 +27,7 @@ function DashboardLayout() {
         numDays,
     } = useRecentBookings();
     // получаем данные о последних "проживаниях" с помощью кастомного хука
-    const {
-        isLoading: isLoadingStays,
-        stays,
-        confirmedStays,
-    } = useRecentStays();
+    const { isLoading: isLoadingStays, confirmedStays } = useRecentStays();
     // получаем данные о кабинах с помощью кастомного хука
     const { cabins, isLoading: isLoadingCabins } = useCabins();
 
@@ -40,13 +37,15 @@ function DashboardLayout() {
 
     return (
         <StyledDashboardLayout>
+            {/* статистика бронирования */}
             <Stats
                 bookings={bookings}
                 confirmedStays={confirmedStays}
                 numDays={numDays} // количество дней
                 cabinCount={cabins.length} // количество кабин
             />
-            <div>Today&apos;s activities</div> {/* Today's activities */}
+            {/* актуальная информация о бронировании пользователей на текущий день (check-in, check-out) + с возможностью регистрации и снятия бронирования */}
+            <TodayActivity />
             {/* круговая диаграмма продолжительности */}
             <DurationChart confirmedStays={confirmedStays} />
             {/* график продаж */}
