@@ -38,6 +38,7 @@ const Box = styled.div`
 
 // --- component --- //
 function ErrorFallback({ error, resetErrorBoundary }) {
+    // resetErrorBoundary - функция для перезагрузки страницы (onReset в ErrorBoundary)
     return (
         <>
             {/* Добавляем глобальные стили */}

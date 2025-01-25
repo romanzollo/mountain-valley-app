@@ -97,6 +97,9 @@ function Toggle({ id }) {
     const { open, close, openId, setPosition } = useContext(MenusContext);
 
     function handleClick(e) {
+        // предотвращает дальнейшее всплытие события вверх по DOM дереву (устраняем баг - не закрывается меню при клике на кнопку меню)
+        e.stopPropagation();
+
         // получаем координаты кнопки которая была кликнута
         const rect = e.target.closest('button').getBoundingClientRect();
         // устанавливаем координаты кнопки в состояние
@@ -122,7 +125,7 @@ function List({ id, children }) {
     const { openId, position, close } = useContext(MenusContext);
 
     // создаем реф который будет следить за кликами вне меню и закрывать его
-    const ref = useOutsideClick(() => close());
+    const ref = useOutsideClick(() => close(), false); // false - обработчик срабатывает только на этапе погружения (устраняем баг - не закрывается меню при клике на кнопку меню)
 
     // если id не равен id открытому меню, то возвращаем null
     if (openId !== id) return null;

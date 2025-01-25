@@ -12,6 +12,7 @@ import ButtonText from '../../ui/ButtonText';
 import Spinner from '../../ui/Spinner';
 import ConfirmDelete from '../../ui/ConfirmDelete';
 import Modal from '../../ui/Modal';
+import Empty from '../../ui/Empty';
 
 import { useMoveBack } from '../../hooks/useMoveBack';
 import { useBooking } from './useBooking';
@@ -43,6 +44,8 @@ function BookingDetail() {
 
     // показываем компонент Spinner если данные загружаются
     if (isLoading) return <Spinner />;
+    // если массив bookings пустой, то отображаем компонент Empty
+    if (!booking) return <Empty resourceName="booking" />;
 
     // получаем данные о бронировании
     const { status, id: bookingId } = booking;
