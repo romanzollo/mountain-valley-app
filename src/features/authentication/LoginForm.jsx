@@ -10,8 +10,8 @@ import { useLogin } from './useLogin';
 
 // --- components --- //
 function LoginForm() {
-    const [email, setEmail] = useState('roman@xmail.com'); // email временно (для разработки)
-    const [password, setPassword] = useState('qwerty16'); // пароль временно (для разработки)
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     // используем кастомный хук для логина
     const { login, isLoading } = useLogin();
