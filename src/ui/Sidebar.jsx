@@ -22,7 +22,7 @@ function Sidebar() {
             <MainNav />
 
             {/* для тестирования */}
-            <Uploader />
+            {/* <Uploader /> */}
         </StyledSidebar>
     );
 }
