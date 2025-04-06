@@ -1,21 +1,21 @@
 // Search for: 'jo', 'fa', 'mar', 'emm', 'ah'
 
 export const guests = [
-    {
-        // id: 1000,
-        fullName: 'Roman Zlagodukhin',
-        email: 'hello@roman.com',
-        nationality: 'Russian Federation',
-        nationalID: '42324322',
-        countryFlag: 'https://flagcdn.com/ru.svg',
-    },
-    {
-        fullName: 'Victoria Zlagodukhina',
-        email: 'victoria@best.eu',
-        nationality: 'United Kingdom',
-        nationalID: '453459345',
-        countryFlag: 'https://flagcdn.com/gb.svg',
-    },
+    // {
+    //     // id: 1000,
+    //     fullName: 'Roman Zlagodukhin',
+    //     email: 'hello@roman.com',
+    //     nationality: 'Russian Federation',
+    //     nationalID: '42324322',
+    //     countryFlag: 'https://flagcdn.com/ru.svg',
+    // },
+    // {
+    //     fullName: 'Victoria Zlagodukhina',
+    //     email: 'victoria@best.eu',
+    //     nationality: 'United Kingdom',
+    //     nationalID: '453459345',
+    //     countryFlag: 'https://flagcdn.com/gb.svg',
+    // },
     {
         fullName: 'Matthew McConaughey',
         email: 'matthew@gmail.com',
@@ -101,13 +101,6 @@ export const guests = [
         nationality: 'United States',
         nationalID: '3245908744',
         countryFlag: 'https://flagcdn.com/us.svg',
-    },
-    {
-        fullName: 'Fatima Ahmed',
-        email: 'fatima@example.com',
-        nationality: 'Pakistan',
-        nationalID: '1089999363',
-        countryFlag: 'https://flagcdn.com/pk.svg',
     },
     {
         fullName: 'David Smith',
