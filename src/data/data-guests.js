@@ -6,14 +6,14 @@ export const guests = [
         fullName: 'Roman Zlagodukhin',
         email: 'hello@roman.com',
         nationality: 'Russian Federation',
-        nationalID: '4232432232',
+        nationalID: '42324322',
         countryFlag: 'https://flagcdn.com/ru.svg',
     },
     {
-        fullName: 'Victoria Z (Larina)',
+        fullName: 'Victoria Zlagodukhina',
         email: 'victoria@best.eu',
         nationality: 'United Kingdom',
-        nationalID: '4534593454',
+        nationalID: '453459345',
         countryFlag: 'https://flagcdn.com/gb.svg',
     },
     {
