@@ -105,27 +105,71 @@ export async function getStaysAfterDate(date) {
 
 // функция возвращает все активные на сегодняшнюю дату бронирования (checked-in и checked-out)
 export async function getStaysTodayActivity() {
+    /*  ВЫЧИСЛЯЕМ НА СЕРВЕРЕ (SUPABASE) но тогда работает только если время startDate и endDate 00:00 */
+    // const { data, error } = await supabase
+    //     .from('bookings') // откуда берем данные
+    //     .select('*, guests(fullName, nationality, countryFlag)') // выбираем нужные столбцы
+    //     .or(
+    //         `and(status.eq.unconfirmed,startDate.eq.${getToday()}),and(status.eq.checked-in,endDate.eq.${getToday()})`
+    //     )
+    //     .order('created_at');
+
+    // /* .or(
+    //         `and(status.eq.unconfirmed,startDate.eq.${getToday()}),and(status.eq.checked-in,endDate.eq.${getToday()})`
+    //     )
+    // в superbase */
+    // //  одно и то же что:
+    // // (stay.status === 'unconfirmed' && isToday(new Date(stay.startDate))) || (stay.status === 'checked-in' && isToday(new Date(stay.endDate)))
+    // // "статус бронирования неподтвержден и начало сегодня" || "статус бронирования заселен и конец сегодня"
+
+    // if (error) {
+    //     console.error(error);
+    //     throw new Error('Bookings could not get loaded');
+    // }
+    // return data;
+
+    /*  ВЫЧИСЛЯЕМ НА КЛИЕНТЕ (тогда время можно любое в течении дня) */
+    // Загружаем все записи из таблицы `bookings` и связанные данные из таблицы `guests`
     const { data, error } = await supabase
-        .from('bookings') // откуда берем данные
-        .select('*, guests(fullName, nationality, countryFlag)') // выбираем нужные столбцы
-        .or(
-            `and(status.eq.unconfirmed,startDate.eq.${getToday()}),and(status.eq.checked-in,endDate.eq.${getToday()})`
-        )
-        .order('created_at');
+        .from('bookings') // Указываем таблицу, из которой берем данные
+        .select('*, guests(fullName, nationality, countryFlag)') // Выбираем все столбцы из `bookings` и связанные данные из `guests`
+        .order('created_at'); // Сортируем результаты по полю `created_at`
 
-    /* .or(
-            `and(status.eq.unconfirmed,startDate.eq.${getToday()}),and(status.eq.checked-in,endDate.eq.${getToday()})`
-        ) 
-    в superbase */
-    //  одно и то же что:
-    // (stay.status === 'unconfirmed' && isToday(new Date(stay.startDate))) || (stay.status === 'checked-in' && isToday(new Date(stay.endDate)))
-    // "статус бронирования неподтвержден и начало сегодня" || "статус бронирования заселен и конец сегодня"
-
+    // Проверяем, не возникла ли ошибка при выполнении запроса
     if (error) {
-        console.error(error);
-        throw new Error('Bookings could not get loaded');
+        console.error(error); // Выводим ошибку в консоль для отладки
+        throw new Error('Bookings could not get loaded'); // Выбрасываем исключение, если данные не загрузились
     }
-    return data;
+
+    // Определяем текущую дату и временные границы для текущего дня
+    const today = new Date(); // Создаем объект текущей даты и времени
+    const startOfDay = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate()
+    ); // Начало текущего дня (00:00:00)
+    const endOfDay = new Date(startOfDay.getTime() + 24 * 60 * 60 * 1000); // Конец текущего дня (23:59:59)
+
+    // Фильтруем загруженные данные на стороне клиента
+    const filteredData = data.filter((stay) => {
+        const startDate = new Date(stay.startDate); // Преобразуем `startDate` в объект Date
+        const endDate = new Date(stay.endDate); // Преобразуем `endDate` в объект Date
+
+        // Возвращаем только те записи, которые соответствуют условиям:
+        return (
+            // Условие 1: Бронирование неподтверждено (`unconfirmed`) и дата начала (`startDate`) попадает в текущий день
+            (stay.status === 'unconfirmed' &&
+                startDate >= startOfDay &&
+                startDate < endOfDay) ||
+            // Условие 2: Бронирование подтверждено (`checked-in`) и дата окончания (`endDate`) попадает в текущий день
+            (stay.status === 'checked-in' &&
+                endDate >= startOfDay &&
+                endDate < endOfDay)
+        );
+    });
+
+    // Возвращаем отфильтрованные данные
+    return filteredData;
 }
 
 /* ОБНОВЛЕНИЕ БРОНИРОВАНИЯ */

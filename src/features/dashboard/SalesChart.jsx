@@ -66,7 +66,7 @@ function SalesChart({ bookings, numDays }) {
     // теперь формируем массив данных для графика (по примеру fakeData) с помощью объекта allDates и библиотеки date-fns:(format, isSameDay) !!!
     const data = allDates.map((date) => {
         return {
-            label: format(date, 'MMM dd'), // форматирование даты
+            label: format(date, 'dd MMM'), // форматирование даты
             totalSales: bookings
                 .filter(
                     (booking) => isSameDay(date, new Date(booking.created_at)) // сравниваем все даты с текущей датой в этом цикле и получаем все заказы с сегодняшней даты
@@ -84,8 +84,8 @@ function SalesChart({ bookings, numDays }) {
         <StyledSalesChart>
             <Heading as="h2">
                 {/* формируем текст типа: "Sales from 21 Dec - 27 Dec, 2025" */}
-                Sales from {format(allDates.at(0), 'MMM dd')} &mdash;{' '}
-                {format(allDates.at(-1), 'MMM dd, yyyy')}
+                Sales from {format(allDates.at(0), 'dd MMM')} &mdash;{' '}
+                {format(allDates.at(-1), 'dd MMM, yyyy')}
             </Heading>
 
             {/* адаптивный контейнер  */}
