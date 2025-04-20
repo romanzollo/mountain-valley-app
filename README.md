@@ -1,6 +1,6 @@
 # **Mountain Valley Hotel Management App**
 
-![App Preview](https://mountain-valley-app.vercel.app/)  
+![App Preview](screenshots/screenshot-2.png)  
 _Custom-built application to manage everything about the hotel: bookings, cabins, and guests._
 
 ---
