@@ -1,206 +1,145 @@
-# **Mountain Valley Hotel Management App**
+#### **Mountain Valley App**
 
 ![App Preview](screenshots/screenshot-2.png)  
 _Custom-built application to manage everything about the hotel: bookings, cabins, and guests._
 
 ---
 
-## **Overview**
-
-The **Mountain Valley Hotel Management App** is a custom-built React application designed to streamline hotel operations. It enables hotel employees to manage bookings, cabins, and guest information efficiently. Built with modern web technologies and powered by **Supabase** for backend and database functionality, this app ensures a seamless user experience.
+A custom-built application designed to manage all aspects of hotel operations, including booking, cabins, and guests. This internal management tool is built using modern web technologies and integrates seamlessly with the customer-facing website.
 
 ---
 
-## **Screenshots**
+### **Table of Contents**
 
-Explore the app's interface through these screenshots:
-
-| Dashboard                                      | Cabin Management                                       | Booking Management                                  |
-| ---------------------------------------------- | ------------------------------------------------------ | --------------------------------------------------- |
-| ![Dashboard](screenshots/screenshot-1.png)     | ![Cabin Management](screenshots/screenshot-2.png)      | ![Booking Management](screenshots/screenshot-3.png) |
-| ![Guest Details](screenshots/screenshot-4.png) | ![Settings](screenshots/screenshot-5.png)              | ![Charts](screenshots/screenshot-6.png)             |
-| ![Dark Mode](screenshots/screenshot-7.png)     | ![Login](screenshots/screenshot-8.png)                 | ![Profile](screenshots/screenshot-9.png)            |
-| ![Check-in](screenshots/screenshot-10.png)     | ![Payment Confirmation](screenshots/screenshot-11.png) |                                                     |
+-   [Overview](#overview)
+-   [Features](#features)
+-   [Project Requirements](#project-requirements)
+-   [Technology Stack](#technology-stack)
+-   [Screenshots](#screenshots)
+-   [Links](#links)
 
 ---
 
-## **Key Features**
+### **Overview**
 
-### **Authentication & User Management**
-
--   **Employee Login**: Only logged-in hotel employees can access the application.
--   **User Signup**: New users can only be created within the app to ensure security.
--   **Profile Management**: Employees can upload an avatar, update their name, and change their password.
-
-### **Cabin Management**
-
--   **Table View**: Displays all cabins with photos, names, capacities, prices, and current discounts.
--   **CRUD Operations**: Create, update, and delete cabins, including uploading cabin photos.
-
-### **Booking Management**
-
--   **Table View**: Shows booking details such as arrival/departure dates, status, payment amount, cabin data, and guest information.
--   **Booking Status**: Filterable by "unconfirmed," "checked in," or "checked out."
--   **Additional Booking Data**: Includes the number of guests, nights, observations, breakfast booking status, and breakfast price.
--   **Actions**: Delete, check in, or check out bookings.
--   **Payment Handling**: Accept payments outside the app and confirm receipt within the app during check-in.
--   **Add Breakfast**: Guests can add breakfast for their entire stay during check-in if not already booked.
-
-### **Guest Management**
-
--   **Guest Data**: Full name, email, national ID, nationality, and country flag for easy identification.
-
-### **Dashboard**
-
--   **Daily Tasks**: View and manage guests checking in or out on the current day.
--   **Statistics**: Insights into recent bookings, sales, check-ins, and occupancy rates.
--   **Charts**:
-    -   Daily hotel sales (total and extras like breakfast).
-    -   Stay duration statistics.
--   **Time Filters**: Display data for the last 7, 30, or 90 days.
-
-### **Settings**
-
--   Define application-wide settings:
-    -   Breakfast price.
-    -   Minimum and maximum nights per booking.
-    -   Maximum guests per booking.
-
-### **Dark Mode**
-
--   A built-in dark mode for better usability in low-light environments.
+The **Mountain Valley App** is an internal management application for hotel employees. It provides a comprehensive dashboard and tools to manage bookings, cabins, and guest information efficiently. The app is built on React and uses Supabase for its backend and database, ensuring seamless integration with the customer-facing website.
 
 ---
 
-## **Technology Stack**
+### **Features**
 
-This application leverages the following modern technologies:
-
-### **Frontend**
-
--   **Routing**: [React Router 6](https://reactrouter.com/)
--   **Styling**: [Styled Components](https://styled-components.com/)
--   **Remote State Management**: [React Query](https://tanstack.com/query)
--   **UI State Management**: [Context API](https://reactjs.org/docs/context.html)
--   **Form Management**: [React Hook Form](https://react-hook-form.com/)
-
-### **Backend & Database**
-
--   **API**: Built using [Supabase](https://supabase.com/), a powerful open-source alternative to Firebase.
-
-### **Other Tools**
-
--   **React Icons**: For icons.
--   **React Query Devtools**: For debugging queries.
--   **Pagination with React Query**: For paginated data fetching.
--   **Pre-Fetching with React Query**: For optimized data loading.
--   **React Hot Toast**: For toast notifications.
--   **Date Fns**: For date manipulation.
--   **PropTypes**: For prop validation.
--   **React Portal**: For rendering elements outside the DOM hierarchy.
--   **Compound Components Pattern**: For reusable UI components.
--   **Render Props Pattern**: For dynamic component rendering.
--   **Custom Hooks**: For reusable logic.
--   **Dark Mode**: For enhanced user experience.
--   **Recharts Library**: For interactive charts.
--   **React Error Boundary**: For error handling (using the `react-error-boundary` library).
+-   **User Management**: Only hotel employees can sign up and log in to perform tasks.
+-   **Cabin Management**: View, update, delete, and create cabins with detailed information such as photos, capacity, price, and discounts.
+-   **Booking Management**: Manage bookings with status tracking ("unconfirmed," "checked in," "checked out"), filterable by status, and payment confirmation.
+-   **Guest Data**: Maintain detailed guest profiles, including full name, email, national ID, nationality, and country flag.
+-   **Dashboard**: Display important statistics for the last 7, 30, or 90 days, including check-ins, check-outs, bookings, sales, and occupancy rates.
+-   **Settings**: Configure application-wide settings like breakfast price, minimum/maximum nights per booking, and maximum guests per booking.
+-   **Dark Mode**: A user-friendly dark mode for better visibility.
 
 ---
 
-## **Getting Started**
+### **Project Requirements**
 
-### **Prerequisites**
+1. **Users**:
 
--   Node.js (v16 or higher)
--   npm or yarn
--   Supabase account (for backend and database)
+    - Users of the app are hotel employees who must be logged in to perform tasks.
+    - New users can only be signed up inside the application to ensure only actual hotel employees have accounts.
 
-### **Installation**
+2. **Profile Management**:
 
-1. Clone the repository:
+    - Users should be able to upload an avatar and change their name and password.
 
-    ```bash
-    git clone https://github.com/your-username/mountain-valley-hotel-app.git
-    cd mountain-valley-hotel-app
-    ```
+3. **Cabin Management**:
 
-2. Install dependencies:
+    - The app needs a table view showing all cabins with details like cabin photo, name, capacity, price, and current discount.
+    - Users should be able to update or delete a cabin and create new cabins (including uploading a photo).
 
-    ```bash
-    npm install
-    ```
+4. **Booking Management**:
 
-3. Set up Supabase:
+    - The app needs a table view showing all bookings with arrival and departure dates, status, paid amount, cabin data, and guest data.
+    - Booking statuses include "unconfirmed," "checked in," and "checked out." The table should be filterable by status.
+    - Other booking data includes: number of guests, number of nights, guest observations, breakfast booking, and breakfast price.
+    - Users should be able to delete, check in, or check out a booking as the guest arrives.
+    - Bookings may not have been paid yet on guest arrival. On check-in, users need to accept payment (outside the app) and then confirm payment received (inside the app).
+    - Guests should have the ability to add breakfast for the entire stay during check-in if they hadn't already booked it.
 
-    - Create a project on [Supabase](https://supabase.com/).
-    - Copy the `.env.example` file to `.env` and fill in your Supabase credentials:
-        ```bash
-        cp .env.example .env
-        ```
-    - Update the `.env` file with your Supabase URL and API key.
+5. **Dashboard**:
 
-4. Start the development server:
+    - Display a list of guests checking in and out on the current day.
+    - Show statistics on recent bookings, sales, check-ins, and occupancy rates.
+    - Include charts for daily hotel sales (total and extras) and stay durations.
 
-    ```bash
-    npm start
-    ```
+6. **Settings**:
 
-5. Open the app in your browser:
-    ```
-    http://localhost:3000
-    ```
+    - Allow users to define application-wide settings such as breakfast price, minimum/maximum nights per booking, and maximum guests per booking.
+
+7. **Dark Mode**:
+    - Implement a dark mode for better usability.
 
 ---
 
-## **Usage**
+### **Technology Stack**
 
--   **Login**: Use the provided employee credentials to log in.
--   **Dashboard**: Access key metrics and daily tasks from the dashboard.
--   **Manage Cabins**: Add, edit, or remove cabins from the cabins table.
--   **Manage Bookings**: Handle guest bookings, check-ins, and check-outs.
--   **Settings**: Configure application-wide settings like breakfast price and booking limits.
+-   **Frontend**:
 
----
+    -   Framework: React
+    -   Routing: React Router 6
+    -   Styling: Styled Components
+    -   Remote State Management: React Query
+    -   UI State Management: Context API
+    -   Form Management: React Hook Form
+    -   Other Tools:
+        -   React Icons
+        -   React Query Devtools
+        -   Pagination with React Query
+        -   Pre-Fetching with React Query
+        -   React Hot Toast
+        -   Date Fns
+        -   prop-types
+        -   React Portal
+        -   Compound Components Pattern
+        -   Render Props Pattern
+        -   Custom Hooks
+        -   Dark Mode
+        -   Recharts Library (for charts)
+        -   React Error Boundary (with react-error-boundary library)
 
-## **Future Enhancements**
-
--   **Editing Bookings**: Allow users to edit existing bookings.
--   **Advanced Analytics**: Introduce more detailed charts and reports.
--   **Multi-language Support**: Add support for multiple languages.
--   **Mobile App**: Develop a mobile-friendly version or a standalone mobile app.
-
----
-
-## **Contributing**
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature/YourFeatureName`).
-3. Commit your changes (`git commit -m 'Add some feature'`).
-4. Push to the branch (`git push origin feature/YourFeatureName`).
-5. Open a pull request.
-
----
-
-## **License**
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+-   **Backend & Database**:
+    -   Built using Supabase (API and Database)
 
 ---
 
-## **Contact**
+### **Screenshots**
 
-For questions or feedback, feel free to reach out:
-
--   **Email**: zloyandmad@yandex.ru
--   **GitHub**: [@romanzollo](https://github.com/romanzollo)
+![Screenshot 1](screenshots/screenshot-1.png)
+![Screenshot 2](screenshots/screenshot-2.png)
+![Screenshot 3](screenshots/screenshot-3.png)
+![Screenshot 4](screenshots/screenshot-4.png)
+![Screenshot 5](screenshots/screenshot-5.png)
+![Screenshot 6](screenshots/screenshot-6.png)
+![Screenshot 7](screenshots/screenshot-7.png)
+![Screenshot 8](screenshots/screenshot-8.png)
+![Screenshot 9](screenshots/screenshot-9.png)
+![Screenshot 10](screenshots/screenshot-10.png)
+![Screenshot 11](screenshots/screenshot-11.png)
 
 ---
 
-## **Acknowledgments**
+### **Links**
 
--   Thanks to [Supabase](https://supabase.com/) for providing the backend infrastructure.
--   Inspired by modern hotel management practices and tools.
+-   **GitHub Repository**: [Mountain Valley App](https://github.com/romanzollo/mountain-valley-app)
+-   **Related Project**: [Mountain Valley Website](https://github.com/romanzollo/mountain-valley-website) – The customer-facing website that shares the same Supabase database and API.
+
+---
+
+### **Contact**
+
+If you have any questions or feedback, feel free to reach out!
+
+---
+
+### **License**
+
+This project is licensed under the MIT License.
 
 ---
