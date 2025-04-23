@@ -1,7 +1,7 @@
 #### **Mountain Valley App**
 
 ![App Preview](screenshots/screenshot-2.png)  
-_A customer-facing website for guests to explore the hotel, view cabins, and manage their profiles. Integrated with the internal management app via a shared Supabase database and API._
+_Custom-built application to manage everything about the hotel: bookings, cabins, and guests._
 
 A custom-built application designed to manage all aspects of hotel operations, including booking, cabins, and guests. This internal management tool is built using modern web technologies and integrates seamlessly with the customer-facing website.
 
