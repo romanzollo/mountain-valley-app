@@ -32,6 +32,8 @@ function TodayItem({ activity }) {
     // извлекаем нужные нам данные (деструктуризация)
     const { id, guests, status, numNights } = activity;
 
+    const worldFlag = guests.countryFlag || '/world-flag.svg';
+
     return (
         <StyledTodayItem>
             {/* отображаем тег с цветом в зависимости от статуса */}
@@ -39,7 +41,7 @@ function TodayItem({ activity }) {
             {status === 'checked-in' && <Tag type="blue">Departing</Tag>}
 
             {/* отображаем флаг и имя пользователя */}
-            <Flag src={guests.countryFlag} alt={`Flag of ${guests.country}`} />
+            <Flag src={worldFlag} alt={`Flag of ${guests.country}`} />
             <Guest>{guests.fullName}</Guest>
 
             {/* отображаем количество ночей */}
