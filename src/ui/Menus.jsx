@@ -39,8 +39,8 @@ const StyledList = styled.ul`
     border-radius: var(--border-radius-md);
 
     // координаты отображения меню в зависимости от позиции окна (position)
-    right: ${(props) => props.position.x}px;
-    top: ${(props) => props.position.y}px;
+    right: ${(props) => props.$position.x}px;
+    top: ${(props) => props.$position.y}px;
 `;
 
 const StyledButton = styled.button`
@@ -133,7 +133,7 @@ function List({ id, children }) {
     // используем Portal чтобы отобразить меню в поверх всего UI приложения для избежания возможных проблем с overflow: hidden
     return createPortal(
         // position props - координаты отображения меню
-        <StyledList position={position} ref={ref}>
+        <StyledList $position={position} ref={ref}>
             {children}
         </StyledList>,
         document.body

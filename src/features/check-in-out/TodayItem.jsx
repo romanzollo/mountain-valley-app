@@ -51,7 +51,7 @@ function TodayItem({ activity }) {
             {status === 'unconfirmed' && (
                 <Button
                     size="small"
-                    variation="primary"
+                    $variation="primary"
                     as={Link} // делаем кнопку ссылкой с помощью Link из react-router
                     to={`/checkin/${id}`} // задаем путь для перехода
                 >

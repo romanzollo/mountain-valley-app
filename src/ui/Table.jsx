@@ -14,7 +14,7 @@ const StyledTable = styled.div`
 const CommonRow = styled.div`
     display: grid;
     grid-template-columns: ${(props) =>
-        props.columns}; // определяем шаблон сетки через props
+        props.$columns}; // определяем шаблон сетки через props
     column-gap: 2.4rem;
     align-items: center;
     transition: none;
@@ -80,7 +80,7 @@ function Header({ children }) {
     const { columns } = useContext(TableContext);
 
     return (
-        <StyledHeader role="row" columns={columns} as="header">
+        <StyledHeader role="row" $columns={columns} as="header">
             {children}
         </StyledHeader>
     );
@@ -90,7 +90,7 @@ function Row({ children }) {
     const { columns } = useContext(TableContext);
 
     return (
-        <StyledRow role="row" columns={columns}>
+        <StyledRow role="row" $columns={columns}>
             {children}
         </StyledRow>
     );

@@ -19,7 +19,7 @@ const FilterButton = styled.button`
 
     // active - активное состояние
     ${(props) =>
-        props.active &&
+        props.$active &&
         css`
             background-color: var(--color-brand-600);
             color: var(--color-brand-50);
@@ -67,7 +67,7 @@ function Filter({ filterField, options }) {
                     key={option.value}
                     onClick={() => handleClick(option.value)}
                     // подсвечиваем активное состояние фильтра с помощью active (FilterButton => props => active)
-                    active={
+                    $active={
                         // fixed error (Received `true` for a non-boolean attribute `active`)
                         currentFilter === option.value
                             ? currentFilter.toString()

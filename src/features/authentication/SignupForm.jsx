@@ -106,7 +106,7 @@ function SignupForm() {
             <FormRow>
                 {/* type — это атрибут HTML! */}
                 <Button
-                    variation="secondary"
+                    $variation="secondary"
                     type="reset"
                     disabled={isLoading}
                     // отчищаем валидационные сообщения об ошибках

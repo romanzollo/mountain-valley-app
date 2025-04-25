@@ -189,7 +189,7 @@ function CreateCabinForm({ cabinToUpdate = {}, onCloseModal }) {
                 <Button
                     // чтобы избежать ошибки, если onCloseModal не передан используем optional chaining
                     onClick={() => onCloseModal?.()}
-                    variation="secondary"
+                    $variation="secondary"
                     type="reset"
                 >
                     Cancel

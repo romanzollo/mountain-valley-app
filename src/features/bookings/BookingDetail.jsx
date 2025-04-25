@@ -82,7 +82,7 @@ function BookingDetail() {
                 <Modal>
                     {/* всплывающее окно для подтверждения удаления бронирования */}
                     <Modal.Open opens="delete">
-                        <Button variation="danger">Delete booking</Button>
+                        <Button $variation="danger">Delete booking</Button>
                     </Modal.Open>
 
                     <Modal.Window name="delete">
@@ -103,7 +103,7 @@ function BookingDetail() {
                 {/* показываем кнопку Check out только если бронирование уже подтверждено */}
                 {status === 'checked-in' && (
                     <Button
-                        icon={<HiArrowUpOnSquare />}
+                        $icon={<HiArrowUpOnSquare />}
                         onClick={() => checkOut(bookingId)}
                         disabled={isCheckOutLoading}
                     >
@@ -111,7 +111,7 @@ function BookingDetail() {
                     </Button>
                 )}
 
-                <Button variation="secondary" onClick={moveBack}>
+                <Button $variation="secondary" onClick={moveBack}>
                     Back
                 </Button>
             </ButtonGroup>

@@ -69,7 +69,7 @@ function UpdatePasswordForm() {
             </FormRow>
             <FormRow>
                 {/* onClick={reset} - отчищаем валидационные сообщения об ошибках */}
-                <Button onClick={reset} type="reset" variation="secondary">
+                <Button onClick={reset} type="reset" $variation="secondary">
                     Cancel
                 </Button>
                 <Button disabled={isUpdating}>Update password</Button>
